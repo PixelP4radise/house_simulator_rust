@@ -9,7 +9,7 @@ pub struct House {
 }
 
 impl House {
-    pub fn build(height: u8, width: u8) -> Result<House, &'static str> {
+    pub fn build(height: u8, width: u8) -> Result<Self, &'static str> {
         if height < 2 || height > 4 {
             return Err("the height doesn't match the requirements");
         }
