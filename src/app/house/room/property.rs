@@ -1,5 +1,6 @@
 pub trait Property {
-    fn get_value(&self) -> i16;
+    type Output;
+    fn get_value(&self) -> Self::Output;
     fn get_descrition(&self) -> &str;
 }
 
