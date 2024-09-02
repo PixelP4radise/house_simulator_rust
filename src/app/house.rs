@@ -17,11 +17,22 @@ impl House {
             return Err("the width doesn't match the requirements");
         }
 
+        let mut rooms = Vec::new();
+        rooms.reserve_exact(height as usize * width as usize);
+
         Ok(House {
-            rooms: vec![],
+            rooms,
             height,
             width,
         })
+    }
+
+    pub fn add_room(&self) {
+        todo!()
+    }
+
+    pub fn remove_room(&self) {
+        todo!()
     }
 }
 
