@@ -1,3 +1,0 @@
-mod room;
-
-struct habitation {}

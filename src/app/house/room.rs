@@ -3,4 +3,4 @@ mod processor;
 mod property;
 mod sensor;
 
-struct room {}
+pub struct Room {}

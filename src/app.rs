@@ -1,6 +1,6 @@
 enum CurrentScreen {}
 
-mod habitation;
+mod house;
 
 struct App {}
 

@@ -3,6 +3,8 @@ trait Property {
     fn get_descrition(&self) -> &str;
 }
 
+//os sensores e aparelhos devem comunicar com as propriedades através das suas chaves
+
 struct Temperature {
     value: u16,
 }
