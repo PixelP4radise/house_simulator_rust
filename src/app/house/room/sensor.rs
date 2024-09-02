@@ -8,8 +8,8 @@ pub trait Measurable {
 }
 
 //since they can only change see or change the value by the kye then it will need to receive a reference to the hashmap
-pub struct TemperatureSensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct TemperatureSensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 impl TemperatureSensor {}
@@ -20,8 +20,8 @@ impl Measurable for TemperatureSensor {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
-pub struct MovementSensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct MovementSensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 
@@ -33,8 +33,8 @@ impl Measurable for MovementSensor {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
-pub struct LuminositySensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct LuminositySensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 impl LuminositySensor {}
@@ -45,8 +45,8 @@ impl Measurable for LuminositySensor {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
-pub struct RadiationSensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct RadiationSensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 impl RadiationSensor {}
@@ -57,8 +57,8 @@ impl Measurable for RadiationSensor {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
-pub struct HumiditySensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct HumiditySensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 impl HumiditySensor {}
@@ -69,8 +69,8 @@ impl Measurable for HumiditySensor {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
-pub struct SoundSensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct SoundSensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 impl SoundSensor {}
@@ -81,8 +81,8 @@ impl Measurable for SoundSensor {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
-pub struct SmokeSensor {
-    properties: &HashMap<String, Box<dyn Property>>,
+pub struct SmokeSensor<'a> {
+    properties: &'a HashMap<String, Box<dyn Property>>,
     key: String,
 }
 impl SoundSensor {}
