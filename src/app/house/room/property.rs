@@ -1,47 +1,47 @@
-trait Property {
+pub trait Property {
     fn get_value(&self) -> i16;
     fn get_descrition(&self) -> &str;
 }
 
 //os sensores e aparelhos devem comunicar com as propriedades através das suas chaves
 
-struct Temperature {
+pub struct Temperature {
     value: u16,
 }
 
 impl Property for Temperature {}
 
-struct Light {
+pub struct Light {
     value: u16,
 }
 
 impl Property for Light {}
 
-struct Radiation {
+pub struct Radiation {
     value: u16,
 }
 
 impl Property for Radiation {}
 
-struct Vibration {
+pub struct Vibration {
     value: u16,
 }
 
 impl Property for Vibration {}
 
-struct Humidity {
+pub struct Humidity {
     value: u16,
 }
 
 impl Property for Humidity {}
 
-struct Smoke {
+pub struct Smoke {
     value: u16,
 }
 
 impl Property for Smoke {}
 
-struct Sound {
+pub struct Sound {
     value: u16,
 }
 impl Property for Sound {}
