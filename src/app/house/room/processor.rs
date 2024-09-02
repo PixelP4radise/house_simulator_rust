@@ -1,6 +1,6 @@
 mod rule;
 
-use rule::{EqualTo, Rule};
+use rule::Rule;
 
 pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
