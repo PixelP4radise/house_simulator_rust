@@ -1,6 +1,5 @@
 pub trait Property {
-    type Output;
-    fn get_value(&self) -> Self::Output;
+    fn get_value(&self) -> u16;
 }
 
 //os sensores e aparelhos devem comunicar com as propriedades através das suas chaves
@@ -11,9 +10,7 @@ pub struct Temperature {
 }
 
 impl Property for Temperature {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
@@ -24,9 +21,7 @@ pub struct Light {
 }
 
 impl Property for Light {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
@@ -37,9 +32,7 @@ pub struct Radiation {
 }
 
 impl Property for Radiation {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
@@ -50,9 +43,7 @@ pub struct Vibration {
 }
 
 impl Property for Vibration {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
@@ -63,9 +54,7 @@ pub struct Humidity {
 }
 
 impl Property for Humidity {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
@@ -76,9 +65,7 @@ pub struct Smoke {
 }
 
 impl Property for Smoke {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
@@ -88,9 +75,7 @@ pub struct Sound {
     value: u16,
 }
 impl Property for Sound {
-    type Output = u16;
-
-    fn get_value(&self) -> Self::Output {
+    fn get_value(&self) -> u16 {
         self.value
     }
 }
