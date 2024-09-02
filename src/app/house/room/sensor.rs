@@ -2,7 +2,7 @@ use crate::app::house::room::property::Property;
 use std::collections::HashMap;
 
 pub trait Measurable {
-    fn sense(&self) -> u16;
+    fn sense(&self) -> i16;
 }
 
 //since they can only change see or change the value by the kye then it will need to receive a reference to the hashmap
@@ -12,7 +12,7 @@ pub struct TemperatureSensor<'a> {
 }
 impl<'a> TemperatureSensor<'a> {}
 impl<'a> Measurable for TemperatureSensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
@@ -23,7 +23,7 @@ pub struct MovementSensor<'a> {
 
 impl<'a> MovementSensor<'a> {}
 impl<'a> Measurable for MovementSensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
@@ -33,7 +33,7 @@ pub struct LuminositySensor<'a> {
 }
 impl<'a> LuminositySensor<'a> {}
 impl<'a> Measurable for LuminositySensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
@@ -43,7 +43,7 @@ pub struct RadiationSensor<'a> {
 }
 impl<'a> RadiationSensor<'a> {}
 impl<'a> Measurable for RadiationSensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
@@ -53,7 +53,7 @@ pub struct HumiditySensor<'a> {
 }
 impl<'a> HumiditySensor<'a> {}
 impl<'a> Measurable for HumiditySensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
@@ -63,7 +63,7 @@ pub struct SoundSensor<'a> {
 }
 impl<'a> SoundSensor<'a> {}
 impl<'a> Measurable for SoundSensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
@@ -73,7 +73,7 @@ pub struct SmokeSensor<'a> {
 }
 impl<'a> SoundSensor<'a> {}
 impl<'a> Measurable for SmokeSensor<'a> {
-    fn sense(&self) -> u16 {
+    fn sense(&self) -> i16 {
         self.properties.get("Temperature").unwrap().get_value()
     }
 }
