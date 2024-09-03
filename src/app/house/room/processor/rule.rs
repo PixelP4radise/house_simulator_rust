@@ -10,8 +10,7 @@ mod in_between;
 mod less_than;
 mod outside;
 
-use equal_to::EqualTo;
-use greater_than::GreaterThan;
-use in_between::InBetween;
-use less_than::LessThan;
-use outside::Outside;
+pub use self::{
+    equal_to::EqualTo, greater_than::GreaterThan, in_between::InBetween, less_than::LessThan,
+    outside::Outside,
+};
