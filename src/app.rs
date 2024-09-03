@@ -1,7 +1,7 @@
 enum CurrentScreen {}
 
 mod house;
-use crate::app::house::House;
+use self::house::House;
 
 pub struct App {
     house: House,
