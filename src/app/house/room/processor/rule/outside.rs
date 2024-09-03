@@ -12,6 +12,7 @@ impl Outside {}
 
 impl Rule for Outside {
     fn assert(&self) -> bool {
-        self.sensor.upgrade().unwrap().sense() < self.first_parameter || self.sensor.upgrade().unwrap().sense() > self.second_parameter
+        self.sensor.upgrade().unwrap().sense() < self.first_parameter
+            || self.sensor.upgrade().unwrap().sense() > self.second_parameter
     }
 }
