@@ -8,6 +8,10 @@ pub struct Lamp {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
 }
 
-impl Lamp {}
+impl Lamp {
+    pub fn new(properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>) -> Self {
+        Self { properties }
+    }
+}
 
 impl Device for Lamp {}

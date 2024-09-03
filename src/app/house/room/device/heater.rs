@@ -7,5 +7,9 @@ use std::rc::Weak;
 pub struct Heater {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
 }
-impl Heater {}
+impl Heater {
+    pub fn new(properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>) -> Self {
+        Self { properties }
+    }
+}
 impl Device for Heater {}

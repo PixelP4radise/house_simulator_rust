@@ -8,6 +8,10 @@ pub struct Cooler {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
 }
 
-impl Cooler {}
+impl Cooler {
+    pub fn new(properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>) -> Self {
+        Self { properties }
+    }
+}
 
 impl Device for Cooler {}

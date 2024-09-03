@@ -8,6 +8,10 @@ pub struct Sprinkler {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
 }
 
-impl Sprinkler {}
+impl Sprinkler {
+    pub fn new(properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>) -> Self {
+        Self { properties }
+    }
+}
 
 impl Device for Sprinkler {}
