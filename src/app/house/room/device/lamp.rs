@@ -7,6 +7,8 @@ use std::rc::Weak;
 pub struct Lamp {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
     id: usize,
+    command: String,
+    ticks_since_last_command: usize,
 }
 
 impl Lamp {
@@ -14,13 +16,22 @@ impl Lamp {
         unsafe {
             let id = DEVICE_COUNTER;
             DEVICE_COUNTER += 1;
-            Self { properties, id }
+            Self {
+                properties,
+                id,
+                command: String::new(),
+                ticks_since_last_command: 0,
+            }
         }
     }
 }
 
 impl Device for Lamp {
     fn tick(&self) {
-        todo!()
+        match self.command.as_str() {
+            "on" => {}
+            "off" => {}
+            _ => {}
+        }
     }
 }
