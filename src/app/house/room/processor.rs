@@ -10,4 +10,6 @@ impl Processor {
     pub fn new() -> Self {
         Self { rules: vec![] }
     }
+
+    pub fn tick(&self) {}
 }

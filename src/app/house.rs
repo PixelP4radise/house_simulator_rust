@@ -35,11 +35,3 @@ impl House {
         todo!()
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn adds_one_room() {}
-}

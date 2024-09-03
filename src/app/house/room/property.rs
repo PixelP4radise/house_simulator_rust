@@ -1,5 +1,6 @@
 pub trait Property {
     fn get_value(&self) -> i16;
+    fn update_value(&self);
 }
 
 mod humidity;
@@ -10,7 +11,7 @@ mod sound;
 mod temperature;
 mod vibration;
 
-use self::{
+pub use self::{
     humidity::Humidity, light::Light, radiation::Radiation, smoke::Smoke, sound::Sound,
     temperature::Temperature, vibration::Vibration,
 };
