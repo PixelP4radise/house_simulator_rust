@@ -1,6 +1,6 @@
 mod rule;
 
-use rule::{Rule, EqualTo, GreaterThan, InBetween, LessThan, Outside};
+use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
 
 pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
