@@ -14,6 +14,12 @@ impl SmokeSensor {
 }
 impl Sensor for SmokeSensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Smoke")
+            .unwrap()
+            .get_value()
     }
 }

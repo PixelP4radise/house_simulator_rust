@@ -15,6 +15,12 @@ impl MovementSensor {
 }
 impl Sensor for MovementSensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Vibration")
+            .unwrap()
+            .get_value()
     }
 }

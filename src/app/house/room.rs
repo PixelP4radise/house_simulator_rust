@@ -65,7 +65,9 @@ impl Room {
                 )))),
             "radiation" => self
                 .sensors
-                .push(Box::new(Radiation::new(Rc::downgrade(&self.properties)))),
+                .push(Box::new(RadiationSensor::new(Rc::downgrade(
+                    &self.properties,
+                )))),
             "smoke" => self
                 .sensors
                 .push(Box::new(SmokeSensor::new(Rc::downgrade(&self.properties)))),

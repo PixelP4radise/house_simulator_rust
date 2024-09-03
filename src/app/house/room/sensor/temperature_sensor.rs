@@ -14,6 +14,12 @@ impl TemperatureSensor {
 }
 impl Sensor for TemperatureSensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Temperature")
+            .unwrap()
+            .get_value()
     }
 }

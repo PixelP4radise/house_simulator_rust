@@ -14,6 +14,12 @@ impl SoundSensor {
 }
 impl Sensor for SoundSensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Sound")
+            .unwrap()
+            .get_value()
     }
 }

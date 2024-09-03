@@ -14,6 +14,12 @@ impl HumiditySensor {
 }
 impl Sensor for HumiditySensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Humidity")
+            .unwrap()
+            .get_value()
     }
 }

@@ -4,7 +4,7 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Weak;
 
-pub struct RadiationSensor<'a> {
+pub struct RadiationSensor {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
 }
 impl RadiationSensor {
@@ -14,6 +14,12 @@ impl RadiationSensor {
 }
 impl Sensor for RadiationSensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Radiation")
+            .unwrap()
+            .get_value()
     }
 }

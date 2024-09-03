@@ -14,6 +14,12 @@ impl LuminositySensor {
 }
 impl Sensor for LuminositySensor {
     fn sense(&self) -> i16 {
-        todo!()
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow()
+            .get("Light")
+            .unwrap()
+            .get_value()
     }
 }
