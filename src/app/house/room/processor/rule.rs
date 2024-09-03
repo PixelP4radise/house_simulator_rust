@@ -4,6 +4,8 @@ pub trait Rule {
     fn assert(&self) -> bool;
 }
 
+static mut RULE_COUNTER: usize = 0;
+
 mod equal_to;
 mod greater_than;
 mod in_between;

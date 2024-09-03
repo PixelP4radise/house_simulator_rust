@@ -16,11 +16,14 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 
+static mut ROOM_COUNTER: usize = 0;
+
 pub struct Room {
     properties: Rc<RefCell<HashMap<String, Box<dyn Property>>>>,
     processors: Vec<Processor>,
     sensors: Vec<Box<dyn Sensor>>,
     devices: Vec<Box<dyn Device>>,
+    id: usize,
 }
 //it's missing location on the house
 
@@ -39,11 +42,16 @@ impl Room {
         properties.insert(String::from("Smoke"), Box::new(Smoke::default()));
         properties.insert(String::from("Sound"), Box::new(Sound::default()));
 
-        Self {
-            properties: Rc::new(RefCell::new(properties)),
-            processors: vec![],
-            sensors: vec![],
-            devices: vec![],
+        unsafe {
+            let id = ROOM_COUNTER;
+            ROOM_COUNTER += 1;
+            Self {
+                properties: Rc::new(RefCell::new(properties)),
+                processors: vec![],
+                sensors: vec![],
+                devices: vec![],
+                id,
+            }
         }
     }
 

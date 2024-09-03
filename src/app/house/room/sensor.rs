@@ -5,6 +5,8 @@ pub trait Sensor {
     fn sense(&self) -> i16;
 }
 
+static mut SENSOR_COUNTER: usize = 0;
+
 //since they can only change see or change the value by the kye then it will need to receive a reference to the hashmap
 mod humidity_sensor;
 mod luminosity_sensor;

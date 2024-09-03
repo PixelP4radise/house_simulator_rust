@@ -1,4 +1,8 @@
-pub trait Device {}
+pub trait Device {
+    fn tick(&self);
+}
+
+static mut DEVICE_COUNTER: usize = 0;
 
 mod cooler;
 mod heater;
