@@ -1,7 +1,7 @@
 use crate::app::house::room::property::Property;
 use std::collections::HashMap;
 
-pub trait Measurable {
+pub trait Sensor {
     fn sense(&self) -> i16;
 }
 
@@ -14,7 +14,7 @@ mod smoke_sensor;
 mod sound_sensor;
 mod temperature_sensor;
 
-use self::{
+pub use self::{
     humidity_sensor::HumiditySensor, luminosity_sensor::LuminositySensor,
     movement_sensor::MovementSensor, radiation_sensor::RadiationSensor, smoke_sensor::SmokeSensor,
     sound_sensor::SoundSensor, temperature_sensor::TemperatureSensor,

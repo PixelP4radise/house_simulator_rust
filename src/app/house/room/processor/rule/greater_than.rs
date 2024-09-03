@@ -1,10 +1,10 @@
 use crate::app::house::room::processor::rule::Rule;
-use crate::app::house::room::sensor::Measurable;
+use crate::app::house::room::sensor::Sensor;
 use std::rc::Weak;
 
 pub struct GreaterThan {
     parameter: i16,
-    sensor: Weak<dyn Measurable>,
+    sensor: Weak<dyn Sensor>,
 }
 
 impl GreaterThan {}
