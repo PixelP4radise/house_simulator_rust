@@ -13,7 +13,6 @@ use property::{Humidity, Light, Property, Radiation, Smoke, Sound, Temperature, 
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
-use std::slice::SplitN;
 
 pub struct Room {
     properties: Rc<RefCell<HashMap<String, Box<dyn Property>>>>,
@@ -81,5 +80,56 @@ impl Room {
                 )))),
             _ => {}
         }
+    }
+
+    pub fn change_property_value(&mut self, property: String, value: i16) {
+        self.properties.borrow().get().unwrap().
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    pub fn adding_a_sensor() {
+        let mut room = Room::new();
+
+        room.add_sensor("humidity");
+
+        assert_eq!(1, room.sensors.len());
+    }
+
+    #[test]
+    pub fn measuring_default_properties_values() {
+        let mut room = Room::new();
+
+        room.add_sensor("humidity");
+
+        assert_eq!(
+            0,
+            room.properties
+                .borrow()
+                .get("Humidity")
+                .unwrap()
+                .get_value()
+        );
+    }
+
+    #[test]
+    pub fn measuring_changed_properties_values() {
+        let mut room = Room::new();
+
+        room.add_sensor("humidity");
+
+        room.change_property_value("Humidity", 40);
+
+        assert_eq!(
+            40,
+            room.properties
+                .borrow()
+                .get("Humidity")
+                .unwrap()
+                .get_value()
+        );
     }
 }
