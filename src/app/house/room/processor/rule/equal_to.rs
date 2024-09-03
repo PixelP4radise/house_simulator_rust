@@ -11,6 +11,6 @@ impl EqualTo {}
 
 impl Rule for EqualTo {
     fn assert(&self) -> bool {
-        todo!()
+        self.sensor.upgrade().unwrap().sense() == self.parameter
     }
 }

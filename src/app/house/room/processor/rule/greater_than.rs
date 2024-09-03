@@ -11,6 +11,6 @@ impl GreaterThan {}
 
 impl Rule for GreaterThan {
     fn assert(&self) -> bool {
-        todo!()
+        self.sensor.upgrade().unwrap().sense() > self.parameter
     }
 }
