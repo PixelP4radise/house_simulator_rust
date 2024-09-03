@@ -3,13 +3,15 @@ mod processor;
 mod property;
 mod sensor;
 
-use self::sensor::{
-    HumiditySensor, LuminositySensor, MovementSensor, RadiationSensor, Sensor, SmokeSensor,
-    SoundSensor, TemperatureSensor,
+use self::{
+    device::Device,
+    processor::Processor,
+    property::{Humidity, Light, Property, Radiation, Smoke, Sound, Temperature, Vibration},
+    sensor::{
+        HumiditySensor, LuminositySensor, MovementSensor, RadiationSensor, Sensor, SmokeSensor,
+        SoundSensor, TemperatureSensor,
+    },
 };
-use crate::app::house::room::device::Device;
-use processor::Processor;
-use property::{Humidity, Light, Property, Radiation, Smoke, Sound, Temperature, Vibration};
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
