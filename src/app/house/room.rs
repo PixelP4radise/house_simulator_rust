@@ -24,11 +24,13 @@ pub struct Room {
     sensors: Vec<Box<dyn Sensor>>,
     devices: Vec<Box<dyn Device>>,
     id: usize,
+    row: u8,
+    column: u8,
 }
 //it's missing location on the house
 
 impl Room {
-    pub fn new() -> Self {
+    pub fn new(row: u8, column: u8) -> Self {
         let mut properties: HashMap<String, Box<dyn Property>> = HashMap::new();
 
         properties.insert(
@@ -51,8 +53,18 @@ impl Room {
                 sensors: vec![],
                 devices: vec![],
                 id,
+                row,
+                column,
             }
         }
+    }
+
+    pub fn row(&self) -> u8 {
+        self.row
+    }
+
+    pub fn column(&self) -> u8 {
+        self.column
     }
 
     pub fn add_sensor(&mut self, sensor_type: &str) {
