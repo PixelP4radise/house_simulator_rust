@@ -10,11 +10,13 @@ use self::sensor::{
 use crate::app::house::room::device::Device;
 use processor::Processor;
 use property::{Humidity, Light, Property, Radiation, Smoke, Sound, Temperature, Vibration};
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 use std::slice::SplitN;
 
 pub struct Room {
-    properties: HashMap<String, Box<dyn Property>>,
+    properties: Rc<RefCell<HashMap<String, Box<dyn Property>>>>,
     processors: Vec<Processor>,
     sensors: Vec<Box<dyn Sensor>>,
     devices: Vec<Box<dyn Device>>,
@@ -37,7 +39,7 @@ impl Room {
         properties.insert(String::from("Sound"), Box::new(Sound::default()));
 
         Self {
-            properties,
+            properties: Rc::new(RefCell::new(properties)),
             processors: vec![],
             sensors: vec![],
             devices: vec![],
@@ -48,25 +50,33 @@ impl Room {
         match sensor_type {
             "humidity" => self
                 .sensors
-                .push(Box::new(HumiditySensor::new(&self.properties))),
+                .push(Box::new(HumiditySensor::new(Rc::downgrade(
+                    &self.properties,
+                )))),
             "luminosity" => self
                 .sensors
-                .push(Box::new(LuminositySensor::new(&self.properties))),
+                .push(Box::new(LuminositySensor::new(Rc::downgrade(
+                    &self.properties,
+                )))),
             "movement" => self
                 .sensors
-                .push(Box::new(MovementSensor::new(&self.properties))),
+                .push(Box::new(MovementSensor::new(Rc::downgrade(
+                    &self.properties,
+                )))),
             "radiation" => self
                 .sensors
-                .push(Box::new(RadiationSensor::new(&self.properties))),
+                .push(Box::new(Radiation::new(Rc::downgrade(&self.properties)))),
             "smoke" => self
                 .sensors
-                .push(Box::new(SmokeSensor::new(&self.properties))),
+                .push(Box::new(SmokeSensor::new(Rc::downgrade(&self.properties)))),
             "sound" => self
                 .sensors
-                .push(Box::new(SoundSensor::new(&self.properties))),
+                .push(Box::new(SoundSensor::new(Rc::downgrade(&self.properties)))),
             "temperature" => self
                 .sensors
-                .push(Box::new(TemperatureSensor::new(&self.properties))),
+                .push(Box::new(TemperatureSensor::new(Rc::downgrade(
+                    &self.properties,
+                )))),
             _ => {}
         }
     }

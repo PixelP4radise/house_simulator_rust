@@ -1,17 +1,19 @@
 use crate::app::house::room::property::Property;
 use crate::app::house::room::sensor::Sensor;
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Weak;
 
 pub struct RadiationSensor<'a> {
-    properties: &'a HashMap<String, Box<dyn Property>>,
+    properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
 }
-impl<'a> RadiationSensor<'a> {
-    pub fn new(properties: &'a HashMap<String, Box<dyn Property>>) -> Self {
+impl RadiationSensor {
+    pub fn new(properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>) -> Self {
         Self { properties }
     }
 }
-impl<'a> Sensor for RadiationSensor<'a> {
+impl Sensor for RadiationSensor {
     fn sense(&self) -> i16 {
-        self.properties.get("Temperature").unwrap().get_value()
+        todo!()
     }
 }
