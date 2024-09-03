@@ -82,8 +82,12 @@ impl Room {
         }
     }
 
-    pub fn change_property_value(&mut self, property: String, value: i16) {
-        self.properties.borrow().get().unwrap().
+    pub fn change_property_value(&mut self, property: &str, value: i16) {
+        self.properties
+            .borrow_mut()
+            .get_mut(property)
+            .unwrap()
+            .update_value(value);
     }
 }
 

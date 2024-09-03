@@ -1,6 +1,6 @@
 pub trait Property {
     fn get_value(&self) -> i16;
-    fn update_value(&self);
+    fn update_value(&mut self, value: i16);
 }
 
 mod humidity;
