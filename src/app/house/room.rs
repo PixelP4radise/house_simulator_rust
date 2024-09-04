@@ -85,54 +85,55 @@ impl Room {
     pub fn devices(&self) -> usize {
         self.devices.len()
     }
-
-    //not finished
-    //error handling
-    pub fn add_sensor(&mut self, sensor_type: &str) {
+    
+    pub fn add_sensor(&mut self, sensor_type: &str) -> Result<(), &'static str> {
         match sensor_type {
-            "humidity" => self
+            "humidity" => Ok(self
                 .sensors
                 .push(Box::new(HumiditySensor::new(Rc::downgrade(
                     &self.properties,
-                )))),
-            "luminosity" => self
+                ))))),
+            "luminosity" => Ok(self
                 .sensors
                 .push(Box::new(LuminositySensor::new(Rc::downgrade(
                     &self.properties,
-                )))),
-            "movement" => self
+                ))))),
+            "movement" => Ok(self
                 .sensors
                 .push(Box::new(MovementSensor::new(Rc::downgrade(
                     &self.properties,
-                )))),
-            "radiation" => self
+                ))))),
+            "radiation" => Ok(self
                 .sensors
                 .push(Box::new(RadiationSensor::new(Rc::downgrade(
                     &self.properties,
-                )))),
-            "smoke" => self
+                ))))),
+            "smoke" => Ok(self
                 .sensors
-                .push(Box::new(SmokeSensor::new(Rc::downgrade(&self.properties)))),
-            "sound" => self
+                .push(Box::new(SmokeSensor::new(Rc::downgrade(&self.properties))))),
+            "sound" => Ok(self
                 .sensors
-                .push(Box::new(SoundSensor::new(Rc::downgrade(&self.properties)))),
-            "temperature" => self
-                .sensors
-                .push(Box::new(TemperatureSensor::new(Rc::downgrade(
-                    &self.properties,
-                )))),
-            _ => {}
+                .push(Box::new(SoundSensor::new(Rc::downgrade(&self.properties))))),
+            "temperature" => {
+                Ok(self
+                    .sensors
+                    .push(Box::new(TemperatureSensor::new(Rc::downgrade(
+                        &self.properties,
+                    )))))
+            }
+            _ => Err("the sensor type specified doesn't exist"),
         }
     }
 
-    //not finished
-    // what if a unknown key is inserted
-    pub fn change_property_value(&mut self, property: &str, value: i16) {
-        self.properties
-            .borrow_mut()
-            .get_mut(property)
-            .unwrap()
-            .update_value(value);
+    pub fn change_property_value(
+        &mut self,
+        property: &str,
+        value: i16,
+    ) -> Result<(), &'static str> {
+        match self.properties.borrow_mut().get_mut(property) {
+            Some(property) => Ok(property.update_value(value)),
+            None => Err("the specified property doesn't exist"),
+        }
     }
 
     pub fn list_properties(&self) -> String {
@@ -147,23 +148,21 @@ impl Room {
         properties_list.concat()
     }
 
-    //not finished
-    //error handling
-    pub fn add_device(&mut self, device_type: &str) {
+    pub fn add_device(&mut self, device_type: &str) -> Result<(), &'static str> {
         match device_type {
-            "cooler" => self
+            "cooler" => Ok(self
                 .devices
-                .push(Box::new(Cooler::new(Rc::downgrade(&self.properties)))),
-            "heater" => self
+                .push(Box::new(Cooler::new(Rc::downgrade(&self.properties))))),
+            "heater" => Ok(self
                 .devices
-                .push(Box::new(Heater::new(Rc::downgrade(&self.properties)))),
-            "lamp" => self
+                .push(Box::new(Heater::new(Rc::downgrade(&self.properties))))),
+            "lamp" => Ok(self
                 .devices
-                .push(Box::new(Lamp::new(Rc::downgrade(&self.properties)))),
-            "sprinkler" => self
+                .push(Box::new(Lamp::new(Rc::downgrade(&self.properties))))),
+            "sprinkler" => Ok(self
                 .devices
-                .push(Box::new(Sprinkler::new(Rc::downgrade(&self.properties)))),
-            _ => {}
+                .push(Box::new(Sprinkler::new(Rc::downgrade(&self.properties))))),
+            _ => Err("device type not recognized"),
         }
     }
 
