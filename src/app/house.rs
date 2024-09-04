@@ -44,6 +44,17 @@ impl House {
         self.rooms.push(Room::new(row, column));
         Ok(())
     }
+
+    pub fn remove_room(&mut self, id: String) -> Result<(), &'static str> {
+        //add error catching
+        match self.rooms.iter().position(|room| room.id() == id) {
+            Some(index) => {
+                self.rooms.remove(index);
+                Ok(())
+            }
+            None => Err("the room with the specified id doesn't exist"),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -79,5 +90,16 @@ mod tests {
         house.add_room(1, 1).unwrap();
 
         assert_eq!(String::from("r0"), house.rooms.get(0).unwrap().id());
+    }
+
+    #[test]
+    #[ignore]
+    //should be run alone
+    fn remove_room_by_id() {
+        let mut house = House::build(2, 2).unwrap();
+        house.add_room(1, 1).unwrap();
+        house.remove_room(String::from("r0")).unwrap();
+
+        assert_eq!(0, house.rooms.len());
     }
 }
