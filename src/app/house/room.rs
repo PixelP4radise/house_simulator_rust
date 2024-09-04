@@ -4,7 +4,7 @@ mod property;
 mod sensor;
 
 use self::{
-    device::Device,
+    device::{Cooler, Device, Heater, Lamp, Sprinkler},
     processor::Processor,
     property::{Humidity, Light, Property, Radiation, Smoke, Sound, Temperature, Vibration},
     sensor::{
@@ -12,7 +12,6 @@ use self::{
         SoundSensor, TemperatureSensor,
     },
 };
-use crate::app::house::room::device::{Cooler, Heater, Lamp, Sprinkler};
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -85,7 +84,7 @@ impl Room {
     pub fn devices(&self) -> usize {
         self.devices.len()
     }
-    
+
     pub fn add_sensor(&mut self, sensor_type: &str) -> Result<(), &'static str> {
         match sensor_type {
             "humidity" => Ok(self
