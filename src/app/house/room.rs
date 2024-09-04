@@ -14,6 +14,7 @@ use self::{
 };
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::fmt::format;
 use std::rc::Rc;
 
 static mut ROOM_COUNTER: usize = 0;
@@ -67,6 +68,12 @@ impl Room {
         self.column
     }
 
+    pub fn id(&self) -> String {
+        let id: String = self.id.to_string();
+        let id = format!("r{id}");
+        id
+    }
+
     pub fn add_sensor(&mut self, sensor_type: &str) {
         match sensor_type {
             "humidity" => self
@@ -118,7 +125,7 @@ mod tests {
     use super::*;
     #[test]
     pub fn adding_a_sensor() {
-        let mut room = Room::new();
+        let mut room = Room::new(1, 1);
 
         room.add_sensor("humidity");
 
@@ -127,7 +134,7 @@ mod tests {
 
     #[test]
     pub fn measuring_default_properties_values() {
-        let mut room = Room::new();
+        let mut room = Room::new(1, 1);
 
         room.add_sensor("humidity");
 
@@ -143,7 +150,7 @@ mod tests {
 
     #[test]
     pub fn measuring_changed_properties_values() {
-        let mut room = Room::new();
+        let mut room = Room::new(1, 1);
 
         room.add_sensor("humidity");
 
