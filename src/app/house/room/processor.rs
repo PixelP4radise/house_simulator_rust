@@ -11,14 +11,14 @@ pub struct Processor {
 }
 
 impl Processor {
-    pub fn new() -> Self {
+    pub fn new(command: String) -> Self {
         unsafe {
             let id = PROCESSOR_COUNTER;
             PROCESSOR_COUNTER += 1;
             Self {
                 rules: vec![],
                 id,
-                command: String::new(),
+                command,
             }
         }
     }
