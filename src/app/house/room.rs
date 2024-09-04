@@ -74,6 +74,18 @@ impl Room {
         id
     }
 
+    pub fn sensors(&self) -> usize {
+        self.sensors.len()
+    }
+
+    pub fn processors(&self) -> usize {
+        self.processors.len()
+    }
+
+    pub fn devices(&self) -> usize {
+        self.devices.len()
+    }
+
     pub fn add_sensor(&mut self, sensor_type: &str) {
         match sensor_type {
             "humidity" => self
