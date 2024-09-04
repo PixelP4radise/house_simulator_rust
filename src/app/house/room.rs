@@ -122,6 +122,8 @@ impl Room {
         }
     }
 
+    //not finished
+    // what if a unknown key is inserted
     pub fn change_property_value(&mut self, property: &str, value: i16) {
         self.properties
             .borrow_mut()

@@ -93,6 +93,15 @@ impl House {
             None => Err("the room with the specified id doesn't exist"),
         }
     }
+
+    //not finished
+    //error handling
+    pub fn change_property_value(&mut self, room_id: String, property: String, value: i16) {
+        match self.rooms.iter().position(|room| room.id() == room_id) {
+            Some(index) => self.rooms[index].change_property_value(property.as_str(), value),
+            None => {}
+        }
+    }
 }
 
 #[cfg(test)]
