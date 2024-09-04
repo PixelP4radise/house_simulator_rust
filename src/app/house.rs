@@ -55,6 +55,33 @@ impl House {
             None => Err("the room with the specified id doesn't exist"),
         }
     }
+
+    pub fn list_room(&self) -> String {
+        let mut room_list = String::new();
+        for room in &self.rooms {
+            let id = room.id();
+            let sensor_number = room.sensors().to_string();
+            let processor_number = room.processors().to_string();
+            let devices_number = room.devices().to_string();
+            room_list.push_str(
+                format!(
+                "Room {id}, sensors: {sensor_number}, processors: {processor_number}, devices: {devices_number}\n"
+                ).as_str()
+            );
+        }
+        room_list
+    }
+
+    pub fn add_sensor(&mut self, room_id: String, sensor_type: String) {
+        match self.rooms.iter().position(|room| room.id() == room_id) {
+            Some(index) => {
+                &self.rooms[index].add_sensor(sensor_type.as_str());
+            }
+            None => {
+                //the specified room doesn't exist
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -101,5 +128,18 @@ mod tests {
         house.remove_room(String::from("r0")).unwrap();
 
         assert_eq!(0, house.rooms.len());
+    }
+
+    #[test]
+    fn list_room() {
+        let mut house = House::build(2, 2).unwrap();
+        house.add_room(1, 1).unwrap();
+        house.add_sensor(String::from("r0"), String::from("humidity"));
+
+        let room_list = house.list_room();
+
+        let expected_output = "Room r0, sensors: 1, processors: 0, devices: 0\n";
+
+        assert_eq!(room_list, expected_output);
     }
 }
