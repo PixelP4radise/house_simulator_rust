@@ -166,6 +166,10 @@ impl Room {
             _ => {}
         }
     }
+
+    pub fn add_processor(&mut self, command: String) {
+        self.processors.push(Processor::new(command));
+    }
 }
 
 #[cfg(test)]

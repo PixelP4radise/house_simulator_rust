@@ -112,6 +112,20 @@ impl House {
             }
         }
     }
+
+    //not finished
+    //error handling
+    pub fn add_processor(&mut self, room_id: String, command: String) {
+        match self.rooms.iter().position(|room| room.id() == room_id){
+            Some(index) => {
+                self.rooms[index].add_processor(command);
+            }
+            None => {
+                //the specified room doesn't exist
+            }
+        }
+    }
+
 }
 
 #[cfg(test)]
