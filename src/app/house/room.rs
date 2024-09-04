@@ -14,7 +14,6 @@ use self::{
 };
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::fmt::format;
 use std::rc::Rc;
 
 static mut ROOM_COUNTER: usize = 0;
@@ -129,6 +128,18 @@ impl Room {
             .get_mut(property)
             .unwrap()
             .update_value(value);
+    }
+
+    pub fn list_properties(&self) -> String {
+        let mut properties_list: Vec<String> = self
+            .properties
+            .borrow()
+            .iter()
+            .map(|(key, value)| format!("{key}: {}\n", value.get_value()))
+            .collect();
+
+        properties_list.sort();
+        properties_list.concat()
     }
 }
 
