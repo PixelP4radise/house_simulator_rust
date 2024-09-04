@@ -7,6 +7,7 @@ static mut PROCESSOR_COUNTER: usize = 0;
 pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
     id: usize,
+    command: String,
 }
 
 impl Processor {
@@ -14,7 +15,11 @@ impl Processor {
         unsafe {
             let id = PROCESSOR_COUNTER;
             PROCESSOR_COUNTER += 1;
-            Self { rules: vec![], id }
+            Self {
+                rules: vec![],
+                id,
+                command: String::new(),
+            }
         }
     }
 
