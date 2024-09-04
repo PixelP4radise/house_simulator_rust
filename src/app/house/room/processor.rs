@@ -23,5 +23,15 @@ impl Processor {
         }
     }
 
+    pub fn id(&self) -> String {
+        let id: String = self.id.to_string();
+        let id = format!("p{id}");
+        id
+    }
+
+    pub fn rules_number(&self) -> usize {
+        self.rules.len()
+    }
+
     pub fn tick(&self) {}
 }

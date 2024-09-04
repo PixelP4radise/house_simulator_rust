@@ -170,6 +170,26 @@ impl Room {
     pub fn add_processor(&mut self, command: String) {
         self.processors.push(Processor::new(command));
     }
+
+    //not finished
+    //sensors and devices
+    pub fn list_components(&self) -> String {
+        let mut component_list: Vec<String> = self
+            .processors
+            .iter()
+            .map(|processor| {
+                format!(
+                    "{} Processador {}\n",
+                    processor.id(),
+                    processor.rules_number()
+                )
+            })
+            .chain(self.sensors.iter().map(|sensor| format!("\n")))
+            .chain(self.devices.iter().map(|device| format!("\n")))
+            .collect();
+
+        component_list.concat()
+    }
 }
 
 #[cfg(test)]

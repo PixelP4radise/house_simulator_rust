@@ -116,7 +116,7 @@ impl House {
     //not finished
     //error handling
     pub fn add_processor(&mut self, room_id: String, command: String) {
-        match self.rooms.iter().position(|room| room.id() == room_id){
+        match self.rooms.iter().position(|room| room.id() == room_id) {
             Some(index) => {
                 self.rooms[index].add_processor(command);
             }
@@ -126,6 +126,14 @@ impl House {
         }
     }
 
+    //not finished
+    //error handling
+    pub fn list_components_from_room(&self, room_id: String) -> Result<String, &'static str> {
+        match self.rooms.iter().position(|room| room.id() == room_id) {
+            Some(index) => Ok(self.rooms[index].list_components()),
+            None => Err("the room with the specified id doesn't exist"),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -229,5 +237,18 @@ mod tests {
         house.add_sensor(String::from("r0"), String::from("humidity"));
 
         assert_eq!(house.rooms[0].sensors(), 1);
+    }
+
+    #[test]
+    #[ignore]
+    //should be run alone
+    fn add_processor() {
+        let mut house = House::build(2, 2).unwrap();
+
+        house.add_room(1, 1).unwrap();
+
+        house.add_processor(String::from("r0"), String::from("on"));
+
+        assert_eq!(house.rooms[0].processors(), 1);
     }
 }
