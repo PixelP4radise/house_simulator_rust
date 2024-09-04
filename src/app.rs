@@ -4,7 +4,7 @@ mod house;
 use self::house::House;
 
 pub struct App {
-    house: House,
+    house: Option<House>,
 }
 
 impl App {
