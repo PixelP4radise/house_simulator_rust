@@ -12,6 +12,7 @@ use self::{
         SoundSensor, TemperatureSensor,
     },
 };
+use crate::app::house::room::device::{Cooler, Heater, Lamp, Sprinkler};
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -85,6 +86,8 @@ impl Room {
         self.devices.len()
     }
 
+    //not finished
+    //error handling
     pub fn add_sensor(&mut self, sensor_type: &str) {
         match sensor_type {
             "humidity" => self
@@ -142,6 +145,26 @@ impl Room {
 
         properties_list.sort();
         properties_list.concat()
+    }
+
+    //not finished
+    //error handling
+    pub fn add_device(&mut self, device_type: &str) {
+        match device_type {
+            "cooler" => self
+                .devices
+                .push(Box::new(Cooler::new(Rc::downgrade(&self.properties)))),
+            "heater" => self
+                .devices
+                .push(Box::new(Heater::new(Rc::downgrade(&self.properties)))),
+            "lamp" => self
+                .devices
+                .push(Box::new(Lamp::new(Rc::downgrade(&self.properties)))),
+            "sprinkler" => self
+                .devices
+                .push(Box::new(Sprinkler::new(Rc::downgrade(&self.properties)))),
+            _ => {}
+        }
     }
 }
 

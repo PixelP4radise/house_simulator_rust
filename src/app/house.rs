@@ -84,7 +84,6 @@ impl House {
             }
         }
     }
-
     //not finished
     //not satisfied with error handling
     pub fn list_properties(&self, room_id: String) -> Result<String, &'static str> {
@@ -100,6 +99,17 @@ impl House {
         match self.rooms.iter().position(|room| room.id() == room_id) {
             Some(index) => self.rooms[index].change_property_value(property.as_str(), value),
             None => {}
+        }
+    }
+
+    //not finished
+    //error handling
+    pub fn add_device(&mut self, room_id: String, device_type: String) {
+        match self.rooms.iter().position(|room| room.id() == room_id) {
+            Some(index) => {}
+            None => {
+                //the specified room doesn't exist
+            }
         }
     }
 }
@@ -181,5 +191,29 @@ mod tests {
         );
 
         assert_eq!(properties_list, expected_output);
+    }
+
+    #[test]
+    #[ignore]
+    //should be run alone
+    fn add_device() {
+        let mut house = House::build(2, 2).unwrap();
+
+        house.add_room(1, 1).unwrap();
+
+        house.add_device(String::from("r0"), String::from("heater"));
+    }
+
+    #[test]
+    #[ignore]
+    //should be run alone
+    fn add_sensor() {
+        let mut house = House::build(2, 2).unwrap();
+
+        house.add_room(1, 1).unwrap();
+
+        house.add_sensor(String::from("r0"), String::from("humidity"));
+
+        assert_eq!(house.rooms[0].sensors(), 1);
     }
 }
