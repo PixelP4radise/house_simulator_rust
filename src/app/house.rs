@@ -85,13 +85,9 @@ impl House {
         room_list
     }
 
-    //not finished
-    //not satisfied with error handling
     pub fn list_properties(&self, room_id: &str) -> Result<String, &'static str> {
-        match self.rooms.iter().position(|room| room.full_id() == room_id) {
-            Some(index) => Ok(self.rooms[index].list_properties()),
-            None => Err("the room with the specified id doesn't exist"),
-        }
+        let index = self.find_room(room_id)?;
+        Ok(self.rooms[index].list_properties())
     }
 
     //not finished
@@ -103,10 +99,8 @@ impl House {
         property: &str,
         value: i16,
     ) -> Result<(), &'static str> {
-        match self.find_room(room_id) {
-            Some(index) => self.rooms[index].change_property_value(property, value),
-            None => Err("the room with the specified id doesn't exist"),
-        }
+        let index = self.find_room(room_id)?;
+        self.rooms[index].change_property_value(property, value)
     }
 
     pub fn add_component(
@@ -115,15 +109,12 @@ impl House {
         component_type: &str,
         entity_or_command: String,
     ) -> Result<(), &'static str> {
-        if let Some(index) = self.find_room(room_id) {
-            match component_type {
-                "p" => Ok(self.rooms[index].add_processor(entity_or_command)),
-                "s" => Ok(self.rooms[index].add_sensor(entity_or_command.as_str())?),
-                "d" => Ok(self.rooms[index].add_device(entity_or_command.as_str())?),
-                _ => Err("The letter of component specified doesn't match any known components"),
-            }
-        } else {
-            Err("The room with the specified id couldn't be found")
+        let index = self.find_room(room_id)?;
+        match component_type {
+            "p" => Ok(self.rooms[index].add_processor(entity_or_command)),
+            "s" => Ok(self.rooms[index].add_sensor(entity_or_command.as_str())?),
+            "d" => Ok(self.rooms[index].add_device(entity_or_command.as_str())?),
+            _ => Err("The letter of component specified doesn't match any known components"),
         }
     }
 
@@ -136,8 +127,11 @@ impl House {
         }
     }
 
-    fn find_room(&self, room_id: &str) -> Option<usize> {
-        self.rooms.iter().position(|room| room.full_id() == room_id)
+    fn find_room(&self, room_id: &str) -> Result<usize, &'static str> {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
+            Some(index) => Ok(index),
+            None => Err("The room with the specified id couldn't be found"),
+        }
     }
 }
 
