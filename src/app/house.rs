@@ -99,12 +99,12 @@ impl House {
     //changing the property to a not allowed type
     pub fn change_property_value(
         &mut self,
-        room_id: String,
-        property: String,
+        room_id: &str,
+        property: &str,
         value: i16,
     ) -> Result<(), &'static str> {
-        match self.rooms.iter().position(|room| room.full_id() == room_id) {
-            Some(index) => self.rooms[index].change_property_value(property.as_str(), value),
+        match self.find_room(room_id) {
+            Some(index) => self.rooms[index].change_property_value(property, value),
             None => Err("the room with the specified id doesn't exist"),
         }
     }
@@ -115,7 +115,7 @@ impl House {
         component_type: &str,
         entity_or_command: String,
     ) -> Result<(), &'static str> {
-        if let Some(index) = self.rooms.iter().position(|room| room.full_id() == room_id) {
+        if let Some(index) = self.find_room(room_id) {
             match component_type {
                 "p" => Ok(self.rooms[index].add_processor(entity_or_command)),
                 "s" => Ok(self.rooms[index].add_sensor(entity_or_command.as_str())?),
@@ -134,6 +134,10 @@ impl House {
             Some(index) => Ok(self.rooms[index].list_components()),
             None => Err("the room with the specified id doesn't exist"),
         }
+    }
+
+    fn find_room(&self, room_id: &str) -> Option<usize> {
+        self.rooms.iter().position(|room| room.full_id() == room_id)
     }
 }
 
