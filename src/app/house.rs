@@ -108,41 +108,21 @@ impl House {
         }
     }
 
-    //not finished
-    //mix this with processor and sensor
-    //error handling
-    pub fn add_device(&mut self, room_id: &str, device_type: &str) {
-        match self.rooms.iter().position(|room| room.full_id() == room_id) {
-            Some(index) => {}
-            None => {
-                //the specified room doesn't exist
+    pub fn add_component(
+        &mut self,
+        room_id: &str,
+        component_type: &str,
+        entity_or_command: String,
+    ) -> Result<(), &'static str> {
+        if let Some(index) = self.rooms.iter().position(|room| room.full_id() == room_id) {
+            match component_type {
+                "p" => Ok(self.rooms[index].add_processor(entity_or_command)),
+                "s" => Ok(self.rooms[index].add_sensor(entity_or_command.as_str())?),
+                "d" => Ok(self.rooms[index].add_device(entity_or_command.as_str())?),
+                _ => Err("The letter of component specified doesn't match any known components"),
             }
-        }
-    }
-
-    //not finished
-    //error handling
-    pub fn add_processor(&mut self, room_id: &str, command: String) {
-        match self.rooms.iter().position(|room| room.full_id() == room_id) {
-            Some(index) => {
-                self.rooms[index].add_processor(command);
-            }
-            None => {
-                //the specified room doesn't exist
-            }
-        }
-    }
-
-    //not finished
-    //error handling not implemented
-    pub fn add_sensor(&mut self, room_id: &str, sensor_type: &str) {
-        match self.rooms.iter().position(|room| room.full_id() == room_id) {
-            Some(index) => {
-                self.rooms[index].add_sensor(sensor_type.as_str());
-            }
-            None => {
-                //the specified room doesn't exist
-            }
+        } else {
+            Err("The room with the specified id couldn't be found")
         }
     }
 
