@@ -66,23 +66,21 @@ impl House {
         }
     }
 
-    //not finished
-    //it can receive refactoring
-    //it can be organized as a table
     pub fn list_room(&self) -> String {
-        let mut room_list = String::new();
-        for room in &self.rooms {
-            let id = room.id();
-            let sensor_number = room.sensors_number().to_string();
-            let processor_number = room.processors_number().to_string();
-            let devices_number = room.devices_number().to_string();
-            room_list.push_str(
+        self.rooms
+            .iter()
+            .map(|room| {
                 format!(
-                "Room {id}, sensors: {sensor_number}, processors: {processor_number}, devices: {devices_number}\n"
-                ).as_str()
-            );
-        }
-        room_list
+                    "{} {}, Sensors: {}, Processors: {}, Devices: {}\n",
+                    room.name(),
+                    room.full_id(),
+                    room.sensors_number(),
+                    room.processors_number(),
+                    room.devices_number()
+                )
+            })
+            .collect()
+            .concat()
     }
 
     pub fn list_properties(&self, room_id: &str) -> Result<String, &'static str> {
@@ -191,7 +189,7 @@ mod tests {
 
         let room_list = house.list_room();
 
-        let expected_output = "Room r0, sensors: 1, processors: 0, devices: 0\n";
+        let expected_output = "Room r0, Sensors: 1, Processors: 0, Devices: 0\n";
 
         assert_eq!(room_list, expected_output);
     }
