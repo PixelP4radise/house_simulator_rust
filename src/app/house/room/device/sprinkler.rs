@@ -42,17 +42,17 @@ impl DescribableItem for Sprinkler {
 }
 
 impl Tickable for Sprinkler {
-    fn tick() {
+    fn tick(&self) {
         todo!()
     }
 }
 
 impl Device for Sprinkler {
-    fn ticks_since_last_command() -> usize {
+    fn ticks_since_last_command(&self) -> usize {
         todo!()
     }
 
-    fn command() -> String {
+    fn command(&self) -> String {
         todo!()
     }
 }

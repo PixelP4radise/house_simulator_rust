@@ -36,7 +36,7 @@ impl Processor {
 }
 
 impl Tickable for Processor {
-    fn tick() {
+    fn tick(&self) {
         todo!()
     }
 }

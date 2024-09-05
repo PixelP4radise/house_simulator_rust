@@ -1,6 +1,6 @@
 pub trait Device: DescribableItem + Tickable {
-    fn ticks_since_last_command() -> usize;
-    fn command() -> String;
+    fn ticks_since_last_command(&self) -> usize;
+    fn command(&self) -> String;
 }
 
 static mut DEVICE_COUNTER: usize = 0;

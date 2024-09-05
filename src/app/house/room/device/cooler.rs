@@ -42,17 +42,17 @@ impl DescribableItem for Cooler {
 }
 
 impl Tickable for Cooler {
-    fn tick() {
+    fn tick(&self) {
         todo!()
     }
 }
 
 impl Device for Cooler {
-    fn ticks_since_last_command() -> usize {
+    fn ticks_since_last_command(&self) -> usize {
         todo!()
     }
 
-    fn command() -> String {
+    fn command(&self) -> String {
         todo!()
     }
 }
