@@ -1,5 +1,6 @@
 mod rule;
 
+use crate::app::house::Tickable;
 use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
 
 static mut PROCESSOR_COUNTER: usize = 0;
@@ -32,6 +33,10 @@ impl Processor {
     pub fn rules_number(&self) -> usize {
         self.rules.len()
     }
+}
 
-    pub fn tick(&self) {}
+impl Tickable for Processor {
+    fn tick() {
+        todo!()
+    }
 }

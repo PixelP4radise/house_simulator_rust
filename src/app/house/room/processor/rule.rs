@@ -1,6 +1,7 @@
 use crate::app::house::room::sensor::Sensor;
+use crate::app::house::DescribableItem;
 
-pub trait Rule {
+pub trait Rule: DescribableItem {
     fn assert(&self) -> bool;
 }
 

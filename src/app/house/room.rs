@@ -16,6 +16,8 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
 
+use super::DescribableItem;
+
 static mut ROOM_COUNTER: usize = 0;
 
 pub struct Room {
@@ -67,21 +69,15 @@ impl Room {
         self.column
     }
 
-    pub fn id(&self) -> String {
-        let id: String = self.id.to_string();
-        let id = format!("r{id}");
-        id
-    }
-
-    pub fn sensors(&self) -> usize {
+    pub fn sensors_number(&self) -> usize {
         self.sensors.len()
     }
 
-    pub fn processors(&self) -> usize {
+    pub fn processors_number(&self) -> usize {
         self.processors.len()
     }
 
-    pub fn devices(&self) -> usize {
+    pub fn devices_number(&self) -> usize {
         self.devices.len()
     }
 
@@ -187,6 +183,20 @@ impl Room {
             .collect();
 
         component_list.concat()
+    }
+}
+
+impl DescribableItem for Room {
+    fn id(&self) -> usize {
+        self.id
+    }
+
+    fn full_id(&self) -> String {
+        format!("r{}", self.id())
+    }
+
+    fn name(&self) -> String {
+        String::from("Room")
     }
 }
 

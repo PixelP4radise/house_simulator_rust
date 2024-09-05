@@ -2,6 +2,16 @@ mod room;
 
 use crate::app::house::room::Room;
 
+pub trait DescribableItem {
+    fn id(&self) -> usize; //id number
+    fn full_id(&self) -> String; //id number with specialized letter
+    fn name(&self) -> String; //name like Room or Processor or Heater
+}
+
+pub trait Tickable {
+    fn tick();
+}
+
 pub struct House {
     rooms: Vec<Room>,
     height: u8,
@@ -56,13 +66,16 @@ impl House {
         }
     }
 
+    //not finished
+    //it can receive refactoring
+    //it can be organized as a table
     pub fn list_room(&self) -> String {
         let mut room_list = String::new();
         for room in &self.rooms {
             let id = room.id();
-            let sensor_number = room.sensors().to_string();
-            let processor_number = room.processors().to_string();
-            let devices_number = room.devices().to_string();
+            let sensor_number = room.sensors_number().to_string();
+            let processor_number = room.processors_number().to_string();
+            let devices_number = room.devices_number().to_string();
             room_list.push_str(
                 format!(
                 "Room {id}, sensors: {sensor_number}, processors: {processor_number}, devices: {devices_number}\n"
@@ -236,7 +249,7 @@ mod tests {
 
         house.add_sensor(String::from("r0"), String::from("humidity"));
 
-        assert_eq!(house.rooms[0].sensors(), 1);
+        assert_eq!(house.rooms[0].sensors_number(), 1);
     }
 
     #[test]
@@ -249,6 +262,6 @@ mod tests {
 
         house.add_processor(String::from("r0"), String::from("on"));
 
-        assert_eq!(house.rooms[0].processors(), 1);
+        assert_eq!(house.rooms[0].processors_number(), 1);
     }
 }

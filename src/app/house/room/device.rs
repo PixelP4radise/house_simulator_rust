@@ -1,5 +1,6 @@
-pub trait Device {
-    fn tick(&self);
+pub trait Device: DescribableItem + Tickable {
+    fn ticks_since_last_command() -> usize;
+    fn command() -> String;
 }
 
 static mut DEVICE_COUNTER: usize = 0;
@@ -10,3 +11,4 @@ mod lamp;
 mod sprinkler;
 
 pub use self::{cooler::Cooler, heater::Heater, lamp::Lamp, sprinkler::Sprinkler};
+use crate::app::house::{DescribableItem, Tickable};

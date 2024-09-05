@@ -1,7 +1,7 @@
 use crate::app::house::room::property::Property;
-use std::collections::HashMap;
+use crate::app::house::DescribableItem;
 
-pub trait Sensor {
+pub trait Sensor: DescribableItem {
     fn sense(&self) -> i16;
 }
 
