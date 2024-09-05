@@ -21,15 +21,15 @@ impl RadiationSensor {
 
 impl DescribableItem for RadiationSensor {
     fn id(&self) -> usize {
-        todo!()
+        self.id
     }
 
     fn full_id(&self) -> String {
-        todo!()
+        format!("s{}", self.id())
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Radiation Sensor")
     }
 }
 

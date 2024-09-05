@@ -29,15 +29,15 @@ impl Cooler {
 
 impl DescribableItem for Cooler {
     fn id(&self) -> usize {
-        todo!()
+        self.id
     }
 
     fn full_id(&self) -> String {
-        todo!()
+        format!("d{}", self.id())
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Cooler")
     }
 }
 

@@ -21,15 +21,15 @@ impl SoundSensor {
 
 impl DescribableItem for SoundSensor {
     fn id(&self) -> usize {
-        todo!()
+        self.id
     }
 
     fn full_id(&self) -> String {
-        todo!()
+        format!("s{}", self.id())
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Sound Sensor")
     }
 }
 

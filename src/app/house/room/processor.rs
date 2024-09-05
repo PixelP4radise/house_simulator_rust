@@ -1,6 +1,6 @@
 mod rule;
 
-use crate::app::house::Tickable;
+use crate::app::house::{DescribableItem, Tickable};
 use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
 
 static mut PROCESSOR_COUNTER: usize = 0;
@@ -32,6 +32,20 @@ impl Processor {
 
     pub fn rules_number(&self) -> usize {
         self.rules.len()
+    }
+}
+
+impl DescribableItem for Processor {
+    fn id(&self) -> usize {
+        self.id
+    }
+
+    fn full_id(&self) -> String {
+        format!("p{}", self.id())
+    }
+
+    fn name(&self) -> String {
+        String::from("Processor")
     }
 }
 
