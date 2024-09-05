@@ -96,6 +96,7 @@ impl House {
 
     //not finished
     //error handling
+    //changing the property to a not allowed type
     pub fn change_property_value(
         &mut self,
         room_id: String,
@@ -186,7 +187,9 @@ mod tests {
     fn list_room() {
         let mut house = House::build(2, 2).unwrap();
         house.add_room(1, 1).unwrap();
-        house.add_sensor("r0", "humidity");
+        house
+            .add_component("r0", "s", String::from("humidity"))
+            .unwrap();
 
         let room_list = house.list_room();
 
@@ -223,7 +226,11 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        house.add_device("r0", "heater");
+        house
+            .add_component("r0", "d", String::from("heater"))
+            .unwrap();
+
+        assert_eq!(house.rooms[0].devices_number(), 1);
     }
 
     #[test]
@@ -234,7 +241,9 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        house.add_sensor("r0", "humidity");
+        house
+            .add_component("r0", "s", String::from("humidity"))
+            .unwrap();
 
         assert_eq!(house.rooms[0].sensors_number(), 1);
     }
@@ -247,7 +256,7 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        house.add_processor("r0", String::from("on"));
+        house.add_component("r0", "p", String::from("on")).unwrap();
 
         assert_eq!(house.rooms[0].processors_number(), 1);
     }
