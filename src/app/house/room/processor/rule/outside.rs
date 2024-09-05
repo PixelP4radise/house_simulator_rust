@@ -1,5 +1,6 @@
 use crate::app::house::room::processor::rule::{Rule, RULE_COUNTER};
 use crate::app::house::room::sensor::Sensor;
+use crate::app::house::DescribableItem;
 use std::rc::Weak;
 
 pub struct Outside {
@@ -21,6 +22,20 @@ impl Outside {
                 id,
             }
         }
+    }
+}
+
+impl DescribableItem for Outside {
+    fn id(&self) -> usize {
+        todo!()
+    }
+
+    fn full_id(&self) -> String {
+        todo!()
+    }
+
+    fn name(&self) -> String {
+        todo!()
     }
 }
 
