@@ -9,7 +9,7 @@ pub trait DescribableItem {
 }
 
 pub trait Tickable {
-    fn tick();
+    fn tick(&self);
 }
 
 pub struct House {
@@ -55,9 +55,9 @@ impl House {
         Ok(())
     }
 
-    pub fn remove_room(&mut self, id: String) -> Result<(), &'static str> {
+    pub fn remove_room(&mut self, id: &str) -> Result<(), &'static str> {
         //add error catching
-        match self.rooms.iter().position(|room| room.id() == id) {
+        match self.rooms.iter().position(|room| room.full_id() == id) {
             Some(index) => {
                 self.rooms.remove(index);
                 Ok(())
@@ -86,21 +86,9 @@ impl House {
     }
 
     //not finished
-    //error handling not implemented
-    pub fn add_sensor(&mut self, room_id: String, sensor_type: String) {
-        match self.rooms.iter().position(|room| room.id() == room_id) {
-            Some(index) => {
-                self.rooms[index].add_sensor(sensor_type.as_str());
-            }
-            None => {
-                //the specified room doesn't exist
-            }
-        }
-    }
-    //not finished
     //not satisfied with error handling
-    pub fn list_properties(&self, room_id: String) -> Result<String, &'static str> {
-        match self.rooms.iter().position(|room| room.id() == room_id) {
+    pub fn list_properties(&self, room_id: &str) -> Result<String, &'static str> {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
             Some(index) => Ok(self.rooms[index].list_properties()),
             None => Err("the room with the specified id doesn't exist"),
         }
@@ -108,17 +96,23 @@ impl House {
 
     //not finished
     //error handling
-    pub fn change_property_value(&mut self, room_id: String, property: String, value: i16) {
-        match self.rooms.iter().position(|room| room.id() == room_id) {
+    pub fn change_property_value(
+        &mut self,
+        room_id: String,
+        property: String,
+        value: i16,
+    ) -> Result<(), &'static str> {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
             Some(index) => self.rooms[index].change_property_value(property.as_str(), value),
-            None => {}
+            None => Err("the room with the specified id doesn't exist"),
         }
     }
 
     //not finished
+    //mix this with processor and sensor
     //error handling
-    pub fn add_device(&mut self, room_id: String, device_type: String) {
-        match self.rooms.iter().position(|room| room.id() == room_id) {
+    pub fn add_device(&mut self, room_id: &str, device_type: &str) {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
             Some(index) => {}
             None => {
                 //the specified room doesn't exist
@@ -128,8 +122,8 @@ impl House {
 
     //not finished
     //error handling
-    pub fn add_processor(&mut self, room_id: String, command: String) {
-        match self.rooms.iter().position(|room| room.id() == room_id) {
+    pub fn add_processor(&mut self, room_id: &str, command: String) {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
             Some(index) => {
                 self.rooms[index].add_processor(command);
             }
@@ -140,9 +134,22 @@ impl House {
     }
 
     //not finished
+    //error handling not implemented
+    pub fn add_sensor(&mut self, room_id: &str, sensor_type: &str) {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
+            Some(index) => {
+                self.rooms[index].add_sensor(sensor_type.as_str());
+            }
+            None => {
+                //the specified room doesn't exist
+            }
+        }
+    }
+
+    //not finished
     //error handling
-    pub fn list_components_from_room(&self, room_id: String) -> Result<String, &'static str> {
-        match self.rooms.iter().position(|room| room.id() == room_id) {
+    pub fn list_components_from_room(&self, room_id: &str) -> Result<String, &'static str> {
+        match self.rooms.iter().position(|room| room.full_id() == room_id) {
             Some(index) => Ok(self.rooms[index].list_components()),
             None => Err("the room with the specified id doesn't exist"),
         }
@@ -151,7 +158,7 @@ impl House {
 
 #[cfg(test)]
 mod tests {
-    use crate::app::house::House;
+    use crate::app::house::{DescribableItem, House};
 
     #[test]
     fn add_one_room() {
@@ -181,7 +188,7 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        assert_eq!(String::from("r0"), house.rooms.get(0).unwrap().id());
+        assert_eq!(String::from("r0"), house.rooms.get(0).unwrap().full_id());
     }
 
     #[test]
@@ -190,7 +197,7 @@ mod tests {
     fn remove_room_by_id() {
         let mut house = House::build(2, 2).unwrap();
         house.add_room(1, 1).unwrap();
-        house.remove_room(String::from("r0")).unwrap();
+        house.remove_room("r0").unwrap();
 
         assert_eq!(0, house.rooms.len());
     }
@@ -199,7 +206,7 @@ mod tests {
     fn list_room() {
         let mut house = House::build(2, 2).unwrap();
         house.add_room(1, 1).unwrap();
-        house.add_sensor(String::from("r0"), String::from("humidity"));
+        house.add_sensor("r0", "humidity");
 
         let room_list = house.list_room();
 
@@ -213,7 +220,7 @@ mod tests {
         let mut house = House::build(2, 2).unwrap();
         house.add_room(1, 1).unwrap();
 
-        let properties_list = house.list_properties(String::from("r0")).unwrap();
+        let properties_list = house.list_properties("r0").unwrap();
 
         let expected_output = concat!(
             "Humidity: 0\n",
@@ -236,7 +243,7 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        house.add_device(String::from("r0"), String::from("heater"));
+        house.add_device("r0", "heater");
     }
 
     #[test]
@@ -247,7 +254,7 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        house.add_sensor(String::from("r0"), String::from("humidity"));
+        house.add_sensor("r0", "humidity");
 
         assert_eq!(house.rooms[0].sensors_number(), 1);
     }
@@ -260,7 +267,7 @@ mod tests {
 
         house.add_room(1, 1).unwrap();
 
-        house.add_processor(String::from("r0"), String::from("on"));
+        house.add_processor("r0", String::from("on"));
 
         assert_eq!(house.rooms[0].processors_number(), 1);
     }
