@@ -1,6 +1,6 @@
 mod room;
 
-use crate::app::house::room::Room;
+use crate::app::house::room::{ParameterNumber, Room};
 
 pub trait DescribableItem {
     fn id(&self) -> usize; //id number
@@ -139,6 +139,19 @@ impl House {
             "d" => Ok(self.rooms[index].remove_device(component_id)?),
             _ => Err("The letter of component specified doesn't match any known components"),
         }
+    }
+
+    pub fn add_rule(
+        &mut self,
+        room_id: &str,
+        processor_id: &str,
+        rule_type: &str,
+        sensor_id: &str,
+        parameters: ParameterNumber,
+    ) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        self.rooms[index].add_rule(processor_id, rule_type, sensor_id, parameters)?;
+        Ok(())
     }
 }
 

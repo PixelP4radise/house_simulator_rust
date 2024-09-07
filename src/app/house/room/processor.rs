@@ -1,9 +1,17 @@
 mod rule;
 
+use crate::app::house::room::sensor::Sensor;
 use crate::app::house::{DescribableItem, Tickable};
 use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
+use std::cmp::Ordering::Equal;
+use std::rc::Weak;
 
 static mut PROCESSOR_COUNTER: usize = 0;
+
+pub enum ParameterNumber {
+    One(i16),
+    Two(i16, i16),
+}
 
 pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
@@ -32,6 +40,61 @@ impl Processor {
 
     pub fn rules_number(&self) -> usize {
         self.rules.len()
+    }
+
+    pub fn add_rule(
+        &mut self,
+        rule_type: &str,
+        sensor: Weak<dyn Sensor>,
+        parameters: ParameterNumber,
+    ) -> Result<(), &'static str> {
+        let (param_1, param_2) = match parameters {
+            ParameterNumber::One(p1) => (p1, None),
+            ParameterNumber::Two(p1, p2) => (p1, Some(p2)),
+        };
+
+        match rule_type {
+            "equal_to" => {
+                if let Some(param_2) = param_2 {
+                    Err("this rule only needs one parameter")
+                } else {
+                    Ok(self.rules.push(Box::new(EqualTo::new(param_1, sensor))))
+                }
+            }
+            "greater_than" => {
+                if let Some(param_2) = param_2 {
+                    Err("this rule only needs one parameter")
+                } else {
+                    Ok(self.rules.push(Box::new(GreaterThan::new(param_1, sensor))))
+                }
+            }
+            "less_than" => {
+                if let Some(param_2) = param_2 {
+                    Err("this rule only needs one parameter")
+                } else {
+                    Ok(self.rules.push(Box::new(LessThan::new(param_1, sensor))))
+                }
+            }
+            "in_between" => {
+                if let Some(param_2) = param_2 {
+                    Ok(self
+                        .rules
+                        .push(Box::new(InBetween::new(param_1, param_2, sensor))))
+                } else {
+                    Err("this rule requires two parameters")
+                }
+            }
+            "outside" => {
+                if let Some(param_2) = param_2 {
+                    Ok(self
+                        .rules
+                        .push(Box::new(Outside::new(param_1, param_2, sensor))))
+                } else {
+                    Err("this rule requires two parameters")
+                }
+            }
+            _ => Err("the rule specified doesn't exist"),
+        }
     }
 }
 

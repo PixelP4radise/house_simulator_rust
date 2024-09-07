@@ -12,11 +12,11 @@ use self::{
         SoundSensor, TemperatureSensor,
     },
 };
+use super::DescribableItem;
+pub use crate::app::house::room::processor::ParameterNumber;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
-
-use super::DescribableItem;
 
 static mut ROOM_COUNTER: usize = 0;
 
@@ -216,6 +216,9 @@ impl Room {
     //not finished need to not allow if weak count is greater than 0
     pub fn remove_sensor(&mut self, sensor_id: &str) -> Result<(), &'static str> {
         let index = self.find_sensor(sensor_id)?;
+        if Rc::weak_count(&self.sensors[index]) > 0 {
+            return Err("Sensor can't be deleted while there are rules that depend on it");
+        }
         self.sensors.remove(index);
         Ok(())
     }
@@ -229,6 +232,25 @@ impl Room {
             Some(index) => Ok(index),
             None => Err("the sensor with the specified id couldn't be found"),
         }
+    }
+
+    pub fn add_rule(
+        &mut self,
+        processor_id: &str,
+        rule_type: &str,
+        sensor_id: &str,
+        parameters: ParameterNumber,
+    ) -> Result<(), &'static str> {
+        let processor_index = self.find_processor(processor_id)?;
+        let sensor_index = self.find_sensor(sensor_id)?;
+
+        self.processors[processor_index].add_rule(
+            rule_type,
+            Rc::downgrade(&self.sensors[sensor_index]),
+            parameters,
+        )?;
+
+        Ok(())
     }
 }
 
