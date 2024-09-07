@@ -184,6 +184,57 @@ impl Room {
 
         component_list.concat()
     }
+
+    pub fn remove_device(&mut self, device_id: &str) -> Result<(), &'static str> {
+        let index = self.find_device(device_id)?;
+        self.devices.remove(index);
+        Ok(())
+    }
+
+    fn find_device(&self, device_id: &str) -> Result<usize, &'static str> {
+        match self
+            .devices
+            .iter()
+            .position(|device| device.full_id() == device_id)
+        {
+            Some(index) => Ok(index),
+            None => Err("the device with the specified id couldn't be found"),
+        }
+    }
+
+    pub fn remove_processor(&mut self, processor_id: &str) -> Result<(), &'static str> {
+        let index = self.find_processor(processor_id)?;
+        self.processors.remove(index);
+        Ok(())
+    }
+
+    fn find_processor(&self, processor_id: &str) -> Result<usize, &'static str> {
+        match self
+            .processors
+            .iter()
+            .position(|processor| processor.full_id() == processor_id)
+        {
+            Some(index) => Ok(index),
+            None => Err("the processor with the specified id couldn't be found"),
+        }
+    }
+
+    pub fn remove_sensor(&mut self, sensor_id: &str) -> Result<(), &'static str> {
+        let index = self.find_sensor(sensor_id)?;
+        self.sensors.remove(index);
+        Ok(())
+    }
+
+    fn find_sensor(&mut self, sensor_id: &str) -> Result<usize, &'static str> {
+        match self
+            .sensors
+            .iter()
+            .position(|sensor| sensor.full_id() == sensor_id)
+        {
+            Some(index) => Ok(index),
+            None => Err("the sensor with the specified id couldn't be found"),
+        }
+    }
 }
 
 impl DescribableItem for Room {
