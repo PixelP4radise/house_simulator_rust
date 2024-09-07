@@ -55,15 +55,10 @@ impl House {
         Ok(())
     }
 
-    pub fn remove_room(&mut self, id: &str) -> Result<(), &'static str> {
-        //add error catching
-        match self.rooms.iter().position(|room| room.full_id() == id) {
-            Some(index) => {
-                self.rooms.remove(index);
-                Ok(())
-            }
-            None => Err("the room with the specified id doesn't exist"),
-        }
+    pub fn remove_room(&mut self, room_id: &str) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        self.rooms.remove(index);
+        Ok(())
     }
 
     pub fn list_room(&self) -> String {
@@ -129,6 +124,21 @@ impl House {
         match self.rooms.iter().position(|room| room.full_id() == room_id) {
             Some(index) => Ok(index),
             None => Err("The room with the specified id couldn't be found"),
+        }
+    }
+
+    pub fn remove_component(
+        &mut self,
+        room_id: &str,
+        component_type: &str,
+        component_id: &str,
+    ) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        match component_type {
+            "s" => Ok(self.rooms[index].remove_device(component_id)?),
+            "p" => Ok(self.rooms[index].remove_device(component_id)?),
+            "d" => Ok(self.rooms[index].remove_device(component_id)?),
+            _ => Err("The letter of component specified doesn't match any known components"),
         }
     }
 }
