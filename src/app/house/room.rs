@@ -91,11 +91,9 @@ impl Room {
                 .push(Rc::new(LuminositySensor::new(Rc::downgrade(
                     &self.properties,
                 ))))),
-            "movement" => Ok(self
-                .sensors
-                .push(Rc::new(MovementSensor::new(Rc::downgrade(
-                    &self.properties,
-                ))))),
+            "movement" => Ok(self.sensors.push(Rc::new(MovementSensor::new(Rc::downgrade(
+                &self.properties,
+            ))))),
             "radiation" => Ok(self
                 .sensors
                 .push(Rc::new(RadiationSensor::new(Rc::downgrade(
@@ -107,13 +105,11 @@ impl Room {
             "sound" => Ok(self
                 .sensors
                 .push(Rc::new(SoundSensor::new(Rc::downgrade(&self.properties))))),
-            "temperature" => {
-                Ok(self
-                    .sensors
-                    .push(Rc::new(TemperatureSensor::new(Rc::downgrade(
-                        &self.properties,
-                    )))))
-            }
+            "temperature" => Ok(self
+                .sensors
+                .push(Rc::new(TemperatureSensor::new(Rc::downgrade(
+                    &self.properties,
+                ))))),
             _ => Err("the sensor type specified doesn't exist"),
         }
     }
