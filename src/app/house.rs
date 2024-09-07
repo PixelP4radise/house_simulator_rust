@@ -74,8 +74,7 @@ impl House {
                     room.devices_number()
                 )
             })
-            .collect()
-            .concat()
+            .collect::<String>()
     }
 
     pub fn list_properties(&self, room_id: &str) -> Result<String, &'static str> {

@@ -23,7 +23,7 @@ static mut ROOM_COUNTER: usize = 0;
 pub struct Room {
     properties: Rc<RefCell<HashMap<String, Box<dyn Property>>>>,
     processors: Vec<Processor>,
-    sensors: Vec<Box<dyn Sensor>>,
+    sensors: Vec<Rc<dyn Sensor>>,
     devices: Vec<Box<dyn Device>>,
     id: usize,
     row: u8,
@@ -83,36 +83,34 @@ impl Room {
 
     pub fn add_sensor(&mut self, sensor_type: &str) -> Result<(), &'static str> {
         match sensor_type {
-            "humidity" => Ok(self
-                .sensors
-                .push(Box::new(HumiditySensor::new(Rc::downgrade(
-                    &self.properties,
-                ))))),
+            "humidity" => Ok(self.sensors.push(Rc::new(HumiditySensor::new(Rc::downgrade(
+                &self.properties,
+            ))))),
             "luminosity" => Ok(self
                 .sensors
-                .push(Box::new(LuminositySensor::new(Rc::downgrade(
+                .push(Rc::new(LuminositySensor::new(Rc::downgrade(
                     &self.properties,
                 ))))),
             "movement" => Ok(self
                 .sensors
-                .push(Box::new(MovementSensor::new(Rc::downgrade(
+                .push(Rc::new(MovementSensor::new(Rc::downgrade(
                     &self.properties,
                 ))))),
             "radiation" => Ok(self
                 .sensors
-                .push(Box::new(RadiationSensor::new(Rc::downgrade(
+                .push(Rc::new(RadiationSensor::new(Rc::downgrade(
                     &self.properties,
                 ))))),
             "smoke" => Ok(self
                 .sensors
-                .push(Box::new(SmokeSensor::new(Rc::downgrade(&self.properties))))),
+                .push(Rc::new(SmokeSensor::new(Rc::downgrade(&self.properties))))),
             "sound" => Ok(self
                 .sensors
-                .push(Box::new(SoundSensor::new(Rc::downgrade(&self.properties))))),
+                .push(Rc::new(SoundSensor::new(Rc::downgrade(&self.properties))))),
             "temperature" => {
                 Ok(self
                     .sensors
-                    .push(Box::new(TemperatureSensor::new(Rc::downgrade(
+                    .push(Rc::new(TemperatureSensor::new(Rc::downgrade(
                         &self.properties,
                     )))))
             }
@@ -219,6 +217,7 @@ impl Room {
         }
     }
 
+    //not finished need to not allow if weak count is greater than 0
     pub fn remove_sensor(&mut self, sensor_id: &str) -> Result<(), &'static str> {
         let index = self.find_sensor(sensor_id)?;
         self.sensors.remove(index);
