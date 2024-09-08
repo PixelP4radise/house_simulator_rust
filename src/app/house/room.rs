@@ -223,7 +223,6 @@ impl Room {
         }
     }
 
-    //not finished need to not allow if weak count is greater than 0
     pub fn remove_sensor(&mut self, sensor_id: &str) -> Result<(), &'static str> {
         let index = self.find_sensor(sensor_id)?;
         if Rc::weak_count(&self.sensors[index]) > 0 {
@@ -254,13 +253,13 @@ impl Room {
         let processor_index = self.find_processor(processor_id)?;
         let sensor_index = self.find_sensor(sensor_id)?;
 
-        self.processors[processor_index].add_rule(
+
+
+        Ok(self.processors[processor_index].add_rule(
             rule_type,
             Rc::downgrade(&self.sensors[sensor_index]),
             parameters,
-        )?;
-
-        Ok(())
+        )?)
     }
 
     pub fn change_command(
