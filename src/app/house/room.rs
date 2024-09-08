@@ -261,6 +261,11 @@ impl Room {
         let index = self.find_processor(processor_id)?;
         Ok(self.processors[index].change_command(command))
     }
+
+    pub fn list_rules(&self, processor_id: &str) -> Result<String, &'static str> {
+        let index = self.find_processor(processor_id)?;
+        Ok(self.processors[index].list_rules())
+    }
 }
 
 impl DescribableItem for Room {

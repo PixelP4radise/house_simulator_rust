@@ -163,6 +163,11 @@ impl House {
         let index = self.find_room(room_id)?;
         Ok(self.rooms[index].change_command(processor_id, command)?)
     }
+
+    pub fn list_rules(&self, room_id: &str, processor_id: &str) -> Result<String, &'static str> {
+        let index = self.find_room(room_id)?;
+        Ok(self.rooms[index].list_rules(processor_id)?)
+    }
 }
 
 #[cfg(test)]

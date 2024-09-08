@@ -41,4 +41,11 @@ impl Rule for LessThan {
     fn assert(&self) -> bool {
         self.sensor.upgrade().unwrap().sense() < self.parameter
     }
+    fn get_sensor_name(&self) -> String {
+        self.sensor.upgrade().unwrap().name()
+    }
+
+    fn get_sensor_full_id(&self) -> String {
+        self.sensor.upgrade().unwrap().full_id()
+    }
 }

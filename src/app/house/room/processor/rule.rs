@@ -3,6 +3,10 @@ use crate::app::house::DescribableItem;
 
 pub trait Rule: DescribableItem {
     fn assert(&self) -> bool;
+
+    fn get_sensor_name(&self) -> String;
+
+    fn get_sensor_full_id(&self) -> String;
 }
 
 static mut RULE_COUNTER: usize = 0;

@@ -94,6 +94,21 @@ impl Processor {
     pub fn change_command(&mut self, command: String) {
         self.command = command;
     }
+
+    pub fn list_rules(&self) -> String {
+        self.rules
+            .iter()
+            .map(|rule| {
+                format!(
+                    "{} {} {} {}\n",
+                    rule.name(),
+                    rule.full_id(),
+                    rule.name(),
+                    rule.full_id()
+                )
+            })
+            .collect::<String>()
+    }
 }
 
 impl DescribableItem for Processor {
