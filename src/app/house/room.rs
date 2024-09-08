@@ -159,24 +159,34 @@ impl Room {
         self.processors.push(Processor::new(command));
     }
 
-    //not finished
-    //sensors and devices
     pub fn list_components(&self) -> String {
-        let mut component_list: Vec<String> = self
-            .processors
+        self.processors
             .iter()
             .map(|processor| {
                 format!(
-                    "{} Processador {}\n",
-                    processor.id(),
+                    "{} {} {}\n",
+                    processor.full_id(),
+                    processor.name(),
                     processor.rules_number()
                 )
             })
-            .chain(self.sensors.iter().map(|sensor| format!("\n")))
-            .chain(self.devices.iter().map(|device| format!("\n")))
-            .collect();
-
-        component_list.concat()
+            .chain(self.sensors.iter().map(|sensor| {
+                format!(
+                    "{} {} {}\n",
+                    sensor.full_id(),
+                    sensor.name(),
+                    sensor.sense()
+                )
+            }))
+            .chain(self.devices.iter().map(|device| {
+                format!(
+                    "{} {} {}\n",
+                    device.full_id(),
+                    device.name(),
+                    device.command()
+                )
+            }))
+            .collect::<String>()
     }
 
     pub fn remove_device(&mut self, device_id: &str) -> Result<(), &'static str> {
