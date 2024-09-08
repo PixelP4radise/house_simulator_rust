@@ -110,13 +110,9 @@ impl House {
         }
     }
 
-    //not finished
-    //error handling
-    pub fn list_components_from_room(&self, room_id: &str) -> Result<String, &'static str> {
-        match self.rooms.iter().position(|room| room.full_id() == room_id) {
-            Some(index) => Ok(self.rooms[index].list_components()),
-            None => Err("the room with the specified id doesn't exist"),
-        }
+    pub fn list_components(&self, room_id: &str) -> Result<String, &'static str> {
+        let index = self.find_room(room_id)?;
+        Ok(self.rooms[index].list_components())
     }
 
     fn find_room(&self, room_id: &str) -> Result<usize, &'static str> {
