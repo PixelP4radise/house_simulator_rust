@@ -1,5 +1,6 @@
 mod rule;
 
+use crate::app::house::room::device::Device;
 use crate::app::house::room::sensor::Sensor;
 use crate::app::house::{DescribableItem, Tickable};
 use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
@@ -17,6 +18,7 @@ pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
     id: usize,
     command: String,
+    device: Option<Weak<dyn Device>>,
 }
 
 impl Processor {
@@ -28,6 +30,7 @@ impl Processor {
                 rules: vec![],
                 id,
                 command,
+                device: None,
             }
         }
     }
@@ -108,6 +111,19 @@ impl Processor {
                 )
             })
             .collect::<String>()
+    }
+
+    pub fn remove_rule(&mut self, rule_id: &str) -> Result<(), &'static str> {
+        let index = self.find_rule(rule_id)?;
+        self.rules.remove(index);
+        Ok(())
+    }
+
+    fn find_rule(&self, rule_id: &str) -> Result<usize, &'static str> {
+        match self.rules.iter().position(|rule| rule.full_id() == rule_id) {
+            Some(index) => Ok(index),
+            None => Err("there was no rule with the specified id"),
+        }
     }
 }
 

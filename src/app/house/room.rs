@@ -253,11 +253,11 @@ impl Room {
         let processor_index = self.find_processor(processor_id)?;
         let sensor_index = self.find_sensor(sensor_id)?;
 
-        Ok(self.processors[processor_index].add_rule(
+        self.processors[processor_index].add_rule(
             rule_type,
             Rc::downgrade(&self.sensors[sensor_index]),
             parameters,
-        )?)
+        )
     }
 
     pub fn change_command(
@@ -272,6 +272,11 @@ impl Room {
     pub fn list_rules(&self, processor_id: &str) -> Result<String, &'static str> {
         let index = self.find_processor(processor_id)?;
         Ok(self.processors[index].list_rules())
+    }
+
+    pub fn remove_rule(&mut self, processor_id: &str, rule_id: &str) -> Result<(), &'static str> {
+        let index = self.find_processor(processor_id)?;
+        self.processors[index].remove_rule(rule_id)
     }
 }
 

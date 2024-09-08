@@ -130,9 +130,9 @@ impl House {
     ) -> Result<(), &'static str> {
         let index = self.find_room(room_id)?;
         match component_type {
-            "s" => Ok(self.rooms[index].remove_device(component_id)?),
-            "p" => Ok(self.rooms[index].remove_device(component_id)?),
-            "d" => Ok(self.rooms[index].remove_device(component_id)?),
+            "s" => self.rooms[index].remove_device(component_id),
+            "p" => self.rooms[index].remove_device(component_id),
+            "d" => self.rooms[index].remove_device(component_id),
             _ => Err("The letter of component specified doesn't match any known components"),
         }
     }
@@ -146,8 +146,7 @@ impl House {
         parameters: ParameterNumber,
     ) -> Result<(), &'static str> {
         let index = self.find_room(room_id)?;
-        self.rooms[index].add_rule(processor_id, rule_type, sensor_id, parameters)?;
-        Ok(())
+        self.rooms[index].add_rule(processor_id, rule_type, sensor_id, parameters)
     }
 
     pub fn change_command(
@@ -157,12 +156,22 @@ impl House {
         command: String,
     ) -> Result<(), &'static str> {
         let index = self.find_room(room_id)?;
-        Ok(self.rooms[index].change_command(processor_id, command)?)
+        self.rooms[index].change_command(processor_id, command)
     }
 
     pub fn list_rules(&self, room_id: &str, processor_id: &str) -> Result<String, &'static str> {
         let index = self.find_room(room_id)?;
-        Ok(self.rooms[index].list_rules(processor_id)?)
+        self.rooms[index].list_rules(processor_id)
+    }
+
+    pub fn remove_rule(
+        &mut self,
+        room_id: &str,
+        processor_id: &str,
+        rule_id: &str,
+    ) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        self.rooms[index].remove_rule(processor_id, rule_id)
     }
 }
 
