@@ -90,6 +90,10 @@ impl Processor {
             _ => Err("the rule specified doesn't exist"),
         }
     }
+
+    pub fn change_command(&mut self, command: String) {
+        self.command = command;
+    }
 }
 
 impl DescribableItem for Processor {

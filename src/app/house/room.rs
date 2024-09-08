@@ -252,6 +252,15 @@ impl Room {
 
         Ok(())
     }
+
+    pub fn change_command(
+        &mut self,
+        processor_id: &str,
+        command: String,
+    ) -> Result<(), &'static str> {
+        let index = self.find_processor(processor_id)?;
+        Ok(self.processors[index].change_command(command))
+    }
 }
 
 impl DescribableItem for Room {

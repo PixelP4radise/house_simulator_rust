@@ -153,6 +153,16 @@ impl House {
         self.rooms[index].add_rule(processor_id, rule_type, sensor_id, parameters)?;
         Ok(())
     }
+
+    pub fn change_command(
+        &mut self,
+        room_id: &str,
+        processor_id: &str,
+        command: String,
+    ) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        Ok(self.rooms[index].change_command(processor_id, command)?)
+    }
 }
 
 #[cfg(test)]
