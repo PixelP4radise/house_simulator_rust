@@ -253,8 +253,6 @@ impl Room {
         let processor_index = self.find_processor(processor_id)?;
         let sensor_index = self.find_sensor(sensor_id)?;
 
-
-
         Ok(self.processors[processor_index].add_rule(
             rule_type,
             Rc::downgrade(&self.sensors[sensor_index]),
