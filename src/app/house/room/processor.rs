@@ -4,6 +4,7 @@ use crate::app::house::room::device::Device;
 use crate::app::house::room::sensor::Sensor;
 use crate::app::house::{DescribableItem, Tickable};
 use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
+use std::cell::RefCell;
 use std::cmp::Ordering::Equal;
 use std::rc::Weak;
 
@@ -18,7 +19,7 @@ pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
     id: usize,
     command: String,
-    device: Option<Weak<dyn Device>>,
+    device: Option<Weak<RefCell<dyn Device>>>,
 }
 
 impl Processor {
@@ -124,6 +125,10 @@ impl Processor {
             Some(index) => Ok(index),
             None => Err("there was no rule with the specified id"),
         }
+    }
+
+    pub fn associate_device(&mut self, device: Weak<RefCell<dyn Device>>) {
+        self.device = Some(device);
     }
 }
 

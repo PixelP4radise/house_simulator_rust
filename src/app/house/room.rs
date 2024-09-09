@@ -24,7 +24,7 @@ pub struct Room {
     properties: Rc<RefCell<HashMap<String, Box<dyn Property>>>>,
     processors: Vec<Processor>,
     sensors: Vec<Rc<dyn Sensor>>,
-    devices: Vec<Box<dyn Device>>,
+    devices: Vec<Rc<RefCell<dyn Device>>>,
     id: usize,
     row: u8,
     column: u8,
@@ -141,16 +141,26 @@ impl Room {
         match device_type {
             "cooler" => Ok(self
                 .devices
-                .push(Box::new(Cooler::new(Rc::downgrade(&self.properties))))),
+                .push(Rc::new(RefCell::new(Cooler::new(Rc::downgrade(
+                    &self.properties,
+                )))))),
             "heater" => Ok(self
                 .devices
-                .push(Box::new(Heater::new(Rc::downgrade(&self.properties))))),
+                .push(Rc::new(RefCell::new(Heater::new(Rc::downgrade(
+                    &self.properties,
+                )))))),
             "lamp" => Ok(self
                 .devices
-                .push(Box::new(Lamp::new(Rc::downgrade(&self.properties))))),
-            "sprinkler" => Ok(self
-                .devices
-                .push(Box::new(Sprinkler::new(Rc::downgrade(&self.properties))))),
+                .push(Rc::new(RefCell::new(Lamp::new(Rc::downgrade(
+                    &self.properties,
+                )))))),
+            "sprinkler" => {
+                Ok(self
+                    .devices
+                    .push(Rc::new(RefCell::new(Sprinkler::new(Rc::downgrade(
+                        &self.properties,
+                    ))))))
+            }
             _ => Err("device type not recognized"),
         }
     }
@@ -277,6 +287,17 @@ impl Room {
     pub fn remove_rule(&mut self, processor_id: &str, rule_id: &str) -> Result<(), &'static str> {
         let index = self.find_processor(processor_id)?;
         self.processors[index].remove_rule(rule_id)
+    }
+
+    pub fn associate_device(
+        &mut self,
+        processor_id: &str,
+        device_id: &str,
+    ) -> Result<(), &'static str> {
+        let processor_index = self.find_processor(processor_id)?;
+        let device_index = self.find_device(device_id)?;
+        Ok(self.processors[processor_index]
+            .associate_device(Rc::downgrade(&self.devices[device_index])))
     }
 }
 
