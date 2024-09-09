@@ -19,7 +19,7 @@ pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
     id: usize,
     command: String,
-    device: Option<Weak<RefCell<dyn Device>>>,
+    devices: Vec<Weak<RefCell<dyn Device>>>,
 }
 
 impl Processor {
@@ -31,7 +31,7 @@ impl Processor {
                 rules: vec![],
                 id,
                 command,
-                device: None,
+                devices: vec![],
             }
         }
     }
@@ -128,7 +128,24 @@ impl Processor {
     }
 
     pub fn associate_device(&mut self, device: Weak<RefCell<dyn Device>>) {
-        self.device = Some(device);
+        self.devices.push(device);
+    }
+
+    fn find_device(&self, device_id: &str) -> Result<usize, &'static str> {
+        match self
+            .devices
+            .iter()
+            .position(|device| device.upgrade().unwrap().borrow().full_id() == device_id)
+        {
+            Some(index) => Ok(index),
+            None => Err("the device with the specified id couldn't be found"),
+        }
+    }
+
+    pub fn remove_device_association(&mut self, device_id: &str) -> Result<(), &'static str> {
+        let index = self.find_device(device_id)?;
+        self.devices.remove(index);
+        Ok(())
     }
 }
 

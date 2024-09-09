@@ -189,6 +189,7 @@ impl Room {
                 )
             }))
             .chain(self.devices.iter().map(|device| {
+                let device = device.borrow();
                 format!(
                     "{} {} {}\n",
                     device.full_id(),
@@ -209,7 +210,7 @@ impl Room {
         match self
             .devices
             .iter()
-            .position(|device| device.full_id() == device_id)
+            .position(|device| device.borrow().full_id() == device_id)
         {
             Some(index) => Ok(index),
             None => Err("the device with the specified id couldn't be found"),
@@ -298,6 +299,15 @@ impl Room {
         let device_index = self.find_device(device_id)?;
         Ok(self.processors[processor_index]
             .associate_device(Rc::downgrade(&self.devices[device_index])))
+    }
+
+    pub fn remove_device_association(
+        &mut self,
+        processor_id: &str,
+        device_id: &str,
+    ) -> Result<(), &'static str> {
+        let index = self.find_processor(processor_id)?;
+        Ok(self.processors[index].remove_device_association(device_id)?)
     }
 }
 
