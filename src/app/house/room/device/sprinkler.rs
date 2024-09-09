@@ -55,4 +55,8 @@ impl Device for Sprinkler {
     fn command(&self) -> String {
         todo!()
     }
+
+    fn set_command(&mut self, command: String) {
+        self.command = command;
+    }
 }

@@ -54,4 +54,7 @@ impl Device for Heater {
     fn command(&self) -> String {
         todo!()
     }
+    fn set_command(&mut self, command: String) {
+        self.command = command;
+    }
 }

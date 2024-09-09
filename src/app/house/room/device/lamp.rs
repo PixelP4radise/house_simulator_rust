@@ -55,4 +55,7 @@ impl Device for Lamp {
     fn command(&self) -> String {
         todo!()
     }
+    fn set_command(&mut self, command: String) {
+        self.command = command;
+    }
 }

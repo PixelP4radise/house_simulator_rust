@@ -55,4 +55,7 @@ impl Device for Cooler {
     fn command(&self) -> String {
         todo!()
     }
+    fn set_command(&mut self, command: String) {
+        self.command = command;
+    }
 }
