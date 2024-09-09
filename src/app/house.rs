@@ -173,6 +173,11 @@ impl House {
         let index = self.find_room(room_id)?;
         self.rooms[index].remove_rule(processor_id, rule_id)
     }
+
+    pub fn associate_device(&mut self, room_id: &str, processor_id: &str, device_id: &str) -> Result<(), &'static str>{
+        let index = self.find_room(room_id)?;
+        self.rooms[index].associate_device(processor_id, device_id)
+    }
 }
 
 #[cfg(test)]
