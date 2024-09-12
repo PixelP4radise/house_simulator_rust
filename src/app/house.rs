@@ -219,6 +219,14 @@ impl House {
             .map(|(key, value)| format!("{key} {} {}", value.full_id(), value.room_id()))
             .collect::<String>()
     }
+
+    pub fn remove_processor_memory(&mut self, processor_name: &str) -> Result<(), &'static str> {
+        if self.processor_memory.remove(processor_name).is_none() {
+            Err("A processor with the specified name couldn't be found.")
+        } else {
+            Ok(())
+        }
+    }
 }
 
 #[cfg(test)]
