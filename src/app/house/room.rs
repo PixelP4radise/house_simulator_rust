@@ -202,6 +202,9 @@ impl Room {
 
     pub fn remove_device(&mut self, device_id: &str) -> Result<(), &'static str> {
         let index = self.find_device(device_id)?;
+        if Rc::weak_count(&self.devices[index]) > 0 {
+            return Err("Device can't be deleted while there are processors that reference it");
+        }
         self.devices.remove(index);
         Ok(())
     }
