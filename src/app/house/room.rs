@@ -5,13 +5,14 @@ mod sensor;
 
 use self::{
     device::{Cooler, Device, Heater, Lamp, Sprinkler},
-    processor::Processor,
     property::{Humidity, Light, Property, Radiation, Smoke, Sound, Temperature, Vibration},
     sensor::{
         HumiditySensor, LuminositySensor, MovementSensor, RadiationSensor, Sensor, SmokeSensor,
         SoundSensor, TemperatureSensor,
     },
 };
+
+pub use self::processor::Processor;
 use super::DescribableItem;
 pub use crate::app::house::room::processor::ParameterNumber;
 use std::cell::RefCell;
@@ -166,7 +167,8 @@ impl Room {
     }
 
     pub fn add_processor(&mut self, command: String) {
-        self.processors.push(Processor::new(command));
+        self.processors
+            .push(Processor::new(command, self.full_id()));
     }
 
     pub fn list_components(&self) -> String {
@@ -311,6 +313,11 @@ impl Room {
     ) -> Result<(), &'static str> {
         let index = self.find_processor(processor_id)?;
         Ok(self.processors[index].remove_device_association(device_id)?)
+    }
+
+    pub fn copy_processor(&self, processor_id: &str) -> Result<Processor, &'static str> {
+        let index = self.find_processor(processor_id)?;
+        Ok(self.processors[index].clone())
     }
 }
 

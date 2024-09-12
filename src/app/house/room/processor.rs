@@ -15,15 +15,17 @@ pub enum ParameterNumber {
     Two(i16, i16),
 }
 
+#[derive(Clone)]
 pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
     id: usize,
     command: String,
     devices: Vec<Weak<RefCell<dyn Device>>>,
+    room_id: String,
 }
 
 impl Processor {
-    pub fn new(command: String) -> Self {
+    pub fn new(command: String, room_id: String) -> Self {
         unsafe {
             let id = PROCESSOR_COUNTER;
             PROCESSOR_COUNTER += 1;
@@ -32,6 +34,7 @@ impl Processor {
                 id,
                 command,
                 devices: vec![],
+                room_id,
             }
         }
     }

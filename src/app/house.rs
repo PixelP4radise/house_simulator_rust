@@ -1,6 +1,7 @@
 mod room;
 
-use crate::app::house::room::{ParameterNumber, Room};
+use crate::app::house::room::{ParameterNumber, Processor, Room};
+use std::collections::HashMap;
 
 pub trait DescribableItem {
     fn id(&self) -> usize; //id number
@@ -16,6 +17,7 @@ pub struct House {
     rooms: Vec<Room>,
     height: u8,
     width: u8,
+    processor_memory: HashMap<String, Processor>,
 }
 
 impl House {
@@ -34,6 +36,7 @@ impl House {
             rooms,
             height,
             width,
+            processor_memory: HashMap::new(),
         })
     }
 
@@ -192,6 +195,18 @@ impl House {
     ) -> Result<(), &'static str> {
         let index = self.find_room(room_id)?;
         Ok(self.rooms[index].remove_device_association(processor_id, device_id)?)
+    }
+
+    pub fn copy_processor(
+        &self,
+        room_id: &str,
+        processor_id: &str,
+        name: String,
+    ) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        Ok(self
+            .processor_memory
+            .insert(name, self.rooms[index].copy_processor(processor_id)?))
     }
 }
 
