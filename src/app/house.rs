@@ -198,15 +198,19 @@ impl House {
     }
 
     pub fn copy_processor(
-        &self,
+        &mut self,
         room_id: &str,
         processor_id: &str,
         name: String,
     ) -> Result<(), &'static str> {
+        if self.processor_memory.contains_key(&name) {
+            return Err("Processor with this name already exists");
+        }
+
         let index = self.find_room(room_id)?;
-        Ok(self
-            .processor_memory
-            .insert(name, self.rooms[index].copy_processor(processor_id)?))
+        self.processor_memory
+            .insert(name, self.rooms[index].copy_processor(processor_id)?);
+        Ok(())
     }
 }
 
