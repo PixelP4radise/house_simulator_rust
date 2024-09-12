@@ -150,6 +150,10 @@ impl Processor {
         self.devices.remove(index);
         Ok(())
     }
+
+    pub fn room_id(&self) -> &str {
+        &self.room_id
+    }
 }
 
 impl DescribableItem for Processor {

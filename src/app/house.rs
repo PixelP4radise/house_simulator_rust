@@ -212,6 +212,13 @@ impl House {
             .insert(name, self.rooms[index].copy_processor(processor_id)?);
         Ok(())
     }
+
+    pub fn list_processor_memory(&self) -> String {
+        self.processor_memory
+            .iter()
+            .map(|(key, value)| format!("{key} {} {}", value.full_id(), value.room_id()))
+            .collect::<String>()
+    }
 }
 
 #[cfg(test)]
