@@ -33,7 +33,7 @@ impl DescribableItem for GreaterThan {
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Greater Than")
     }
 }
 
@@ -47,5 +47,15 @@ impl Rule for GreaterThan {
 
     fn get_sensor_full_id(&self) -> String {
         self.sensor.upgrade().unwrap().full_id()
+    }
+}
+
+impl Clone for GreaterThan {
+    fn clone(&self) -> Self {
+        Self {
+            parameter: self.parameter,
+            sensor: self.sensor.clone(),
+            id: self.id,
+        }
     }
 }

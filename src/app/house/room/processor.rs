@@ -5,7 +5,6 @@ use crate::app::house::room::sensor::Sensor;
 use crate::app::house::{DescribableItem, Tickable};
 use rule::{EqualTo, GreaterThan, InBetween, LessThan, Outside, Rule};
 use std::cell::RefCell;
-use std::cmp::Ordering::Equal;
 use std::rc::Weak;
 
 static mut PROCESSOR_COUNTER: usize = 0;
@@ -15,7 +14,6 @@ pub enum ParameterNumber {
     Two(i16, i16),
 }
 
-#[derive(Clone)]
 pub struct Processor {
     rules: Vec<Box<dyn Rule>>,
     id: usize,
@@ -173,5 +171,21 @@ impl DescribableItem for Processor {
 impl Tickable for Processor {
     fn tick(&self) {
         todo!()
+    }
+}
+
+impl Clone for Processor {
+    fn clone(&self) -> Self {
+        let mut rules: Vec<Box<dyn Rule>> =
+            self.rules.iter().map(|rule| rule.clone_box()).collect();
+        let mut devices = self.devices.iter().map(|device| device.clone()).collect();
+
+        Processor {
+            id: self.id,
+            command: self.command.clone(),
+            room_id: self.room_id.clone(),
+            rules,
+            devices,
+        }
     }
 }

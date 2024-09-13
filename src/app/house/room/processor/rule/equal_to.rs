@@ -33,7 +33,7 @@ impl DescribableItem for EqualTo {
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Equal To")
     }
 }
 
@@ -47,5 +47,15 @@ impl Rule for EqualTo {
 
     fn get_sensor_full_id(&self) -> String {
         self.sensor.upgrade().unwrap().full_id()
+    }
+}
+
+impl Clone for EqualTo {
+    fn clone(&self) -> Self {
+        Self {
+            id: self.id,
+            parameter: self.parameter,
+            sensor: self.sensor.clone(),
+        }
     }
 }

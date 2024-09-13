@@ -35,7 +35,7 @@ impl DescribableItem for Outside {
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Outside")
     }
 }
 
@@ -51,5 +51,16 @@ impl Rule for Outside {
 
     fn get_sensor_full_id(&self) -> String {
         self.sensor.upgrade().unwrap().full_id()
+    }
+}
+
+impl Clone for Outside {
+    fn clone(&self) -> Self {
+        Self {
+            first_parameter: self.first_parameter,
+            second_parameter: self.second_parameter,
+            id: self.id,
+            sensor: self.sensor.clone(),
+        }
     }
 }

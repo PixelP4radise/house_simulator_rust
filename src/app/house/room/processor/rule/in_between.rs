@@ -35,7 +35,7 @@ impl DescribableItem for InBetween {
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("In Between")
     }
 }
 
@@ -50,5 +50,16 @@ impl Rule for InBetween {
 
     fn get_sensor_full_id(&self) -> String {
         self.sensor.upgrade().unwrap().full_id()
+    }
+}
+
+impl Clone for InBetween {
+    fn clone(&self) -> Self {
+        Self {
+            first_parameter: self.first_parameter,
+            second_parameter: self.second_parameter,
+            sensor: self.sensor.clone(),
+            id: self.id,
+        }
     }
 }

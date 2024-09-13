@@ -33,7 +33,7 @@ impl DescribableItem for LessThan {
     }
 
     fn name(&self) -> String {
-        todo!()
+        String::from("Less Than")
     }
 }
 
@@ -47,5 +47,15 @@ impl Rule for LessThan {
 
     fn get_sensor_full_id(&self) -> String {
         self.sensor.upgrade().unwrap().full_id()
+    }
+}
+
+impl Clone for LessThan {
+    fn clone(&self) -> Self {
+        Self {
+            parameter: self.parameter,
+            id: self.id,
+            sensor: self.sensor.clone(),
+        }
     }
 }
