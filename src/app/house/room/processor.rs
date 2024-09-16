@@ -170,7 +170,21 @@ impl DescribableItem for Processor {
 
 impl Tickable for Processor {
     fn tick(&self) {
-        todo!()
+        if self.rules.len() == 0 {
+            return;
+        }
+        for rule in self.rules {
+            if !rule.assert() {
+                return;
+            }
+        }
+        for device in self.devices {
+            device
+                .upgrade()
+                .unwrap()
+                .borrow_mut()
+                .set_command(self.command.clone())
+        }
     }
 }
 
