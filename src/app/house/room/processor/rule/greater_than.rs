@@ -25,11 +25,11 @@ impl GreaterThan {
 
 impl DescribableItem for GreaterThan {
     fn id(&self) -> usize {
-        todo!()
+        self.id
     }
 
     fn full_id(&self) -> String {
-        todo!()
+        format!("r{}", self.id)
     }
 
     fn name(&self) -> String {
