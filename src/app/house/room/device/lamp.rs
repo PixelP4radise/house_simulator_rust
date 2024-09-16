@@ -49,13 +49,13 @@ impl Tickable for Lamp {
 
 impl Device for Lamp {
     fn ticks_since_last_command(&self) -> usize {
-        todo!()
+        self.ticks_since_last_command
     }
 
-    fn command(&self) -> String {
-        todo!()
+    fn command(&self) -> &Option<String> {
+        &self.command
     }
     fn set_command(&mut self, command: String) {
-        self.command = command;
+        self.command = Some(command);
     }
 }

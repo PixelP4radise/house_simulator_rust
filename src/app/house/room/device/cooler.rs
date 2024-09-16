@@ -52,10 +52,10 @@ impl Device for Cooler {
         self.ticks_since_last_command
     }
 
-    fn command(&self) -> &String {
+    fn command(&self) -> &Option<String> {
         &self.command
     }
     fn set_command(&mut self, command: String) {
-        self.command = command;
+        self.command = Some(command);
     }
 }

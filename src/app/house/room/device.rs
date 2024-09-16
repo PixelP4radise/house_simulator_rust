@@ -1,6 +1,6 @@
 pub trait Device: DescribableItem + Tickable {
     fn ticks_since_last_command(&self) -> usize;
-    fn command(&self) -> String;
+    fn command(&self) -> &Option<String>;
 
     fn set_command(&mut self, command: String);
 }
