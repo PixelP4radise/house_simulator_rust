@@ -78,6 +78,7 @@ impl Tickable for Cooler {
                 }
                 _ => {}
             }
+            self.ticks_since_last_command += 1;
         }
     }
 }

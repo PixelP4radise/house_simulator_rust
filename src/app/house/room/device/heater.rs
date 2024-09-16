@@ -69,6 +69,7 @@ impl Tickable for Heater {
                 "off" => {}
                 _ => {}
             }
+            self.ticks_since_last_command += 1;
         }
     }
 }

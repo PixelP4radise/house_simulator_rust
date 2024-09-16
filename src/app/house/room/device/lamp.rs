@@ -71,6 +71,7 @@ impl Tickable for Lamp {
                 }
                 _ => {}
             }
+            self.ticks_since_last_command += 1;
         }
     }
 }
