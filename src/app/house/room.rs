@@ -192,12 +192,11 @@ impl Room {
             }))
             .chain(self.devices.iter().map(|device| {
                 let device = device.borrow();
-                format!(
-                    "{} {} {}\n",
-                    device.full_id(),
-                    device.name(),
-                    device.command()
-                )
+                let command_str = match device.command() {
+                    Some(command) => command.clone(), // Clone the command string
+                    None => String::new(),            // Default to an empty string
+                };
+                format!("{} {} {}\n", device.full_id(), device.name(), command_str)
             }))
             .collect::<String>()
     }
@@ -321,7 +320,7 @@ impl Room {
     }
 
     pub fn restore_processor(&mut self, processor: Processor) {
-        if let Some(index) = self.find_processor(processor.full_id().as_str()) {
+        if let Ok(index) = self.find_processor(processor.full_id().as_str()) {
             self.processors[index] = processor;
         } else {
             self.processors.push(processor);

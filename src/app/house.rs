@@ -229,7 +229,7 @@ impl House {
     }
 
     pub fn restore_processor(&mut self, processor_name: &str) -> Result<(), &'static str> {
-        if let Some(processor) = self.processor_memory.get(&processor_name) {
+        if let Some(processor) = self.processor_memory.get(processor_name) {
             match self.find_room(processor.room_id()) {
                 Ok(index) => {
                     self.rooms[index].restore_processor(processor.clone());
