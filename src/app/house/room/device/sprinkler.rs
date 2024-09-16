@@ -2,6 +2,7 @@ use crate::app::house::room::device::{Device, DEVICE_COUNTER};
 use crate::app::house::room::property::Property;
 use crate::app::house::{DescribableItem, Tickable};
 use std::cell::RefCell;
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::rc::{Rc, Weak};
 
@@ -99,10 +100,15 @@ impl Device for Sprinkler {
     fn command(&self) -> &Option<String> {
         &self.command
     }
-
-    //set command needs to alter the fact if the command is different it needs to reset the counter
     fn set_command(&mut self, command: String) {
-        //self.command = Some(command);
-        todo!()
+        if let Some(old_command) = &self.command {
+            match old_command.cmp(&command) {
+                Ordering::Equal => {}
+                _ => {
+                    self.command = Some(command);
+                    self.ticks_since_last_command = 0;
+                }
+            }
+        }
     }
 }
