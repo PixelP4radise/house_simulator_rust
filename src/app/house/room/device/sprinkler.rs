@@ -51,17 +51,11 @@ impl Tickable for Sprinkler {
                         let mut properties = properties_rc.borrow_mut();
 
                         let mut humidity = properties.get_mut("Humidity").unwrap();
-
                         let current_value = humidity.get_value();
                         let new_value = current_value + 50;
-                        if new_value > 75 {
-                            humidity.update_value(75);
-                        } else {
-                            humidity.update_value(new_value);
-                        }
+                        humidity.update_value(new_value.min(75));
 
                         let mut vibration = properties.get_mut("Vibration").unwrap();
-
                         let current_value = vibration.get_value();
                         let new_value = current_value + 100;
                         vibration.update_value(new_value);
