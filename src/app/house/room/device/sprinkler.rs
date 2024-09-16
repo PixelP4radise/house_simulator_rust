@@ -3,7 +3,7 @@ use crate::app::house::room::property::Property;
 use crate::app::house::{DescribableItem, Tickable};
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::rc::Weak;
+use std::rc::{Rc, Weak};
 
 pub struct Sprinkler {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
@@ -48,6 +48,7 @@ impl Tickable for Sprinkler {
                 "on" => match self.ticks_since_last_command {
                     0 => {
                         let properties_rc = self.properties.upgrade().unwrap();
+
                         let mut properties = properties_rc.borrow_mut();
 
                         let mut humidity = properties.get_mut("Humidity").unwrap();
@@ -76,11 +77,11 @@ impl Tickable for Sprinkler {
                         let properties_rc = self.properties.upgrade().unwrap();
                         let mut properties = properties_rc.borrow_mut();
 
-                        let mut smoke = properties.get_mut("Smoke").unwrap();
+                        let mut vibration = properties.get_mut("Vibration").unwrap();
 
-                        let current_value = smoke.get_value();
+                        let current_value = vibration.get_value();
                         let new_value = current_value - 100;
-                        smoke.update_value(new_value);
+                        vibration.update_value(new_value);
                     }
                 }
                 _ => {}
