@@ -319,6 +319,14 @@ impl Room {
         let index = self.find_processor(processor_id)?;
         Ok(self.processors[index].clone())
     }
+
+    pub fn restore_processor(&mut self, processor: Processor) {
+        if let Some(index) = self.find_processor(processor.full_id().as_str()) {
+            self.processors[index] = processor;
+        } else {
+            self.processors.push(processor);
+        }
+    }
 }
 
 impl DescribableItem for Room {
