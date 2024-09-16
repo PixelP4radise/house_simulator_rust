@@ -43,7 +43,7 @@ impl DescribableItem for Cooler {
 }
 
 impl Tickable for Cooler {
-    fn tick(&self) {
+    fn tick(&mut self) {
         if let Some(command) = &self.command {
             match command.as_str() {
                 "on" => {

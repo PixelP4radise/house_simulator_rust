@@ -41,7 +41,7 @@ impl DescribableItem for Heater {
 }
 
 impl Tickable for Heater {
-    fn tick(&self) {
+    fn tick(&mut self) {
         if let Some(command) = &self.command {
             match command.as_str() {
                 "on" => {

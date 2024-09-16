@@ -10,7 +10,7 @@ pub trait DescribableItem {
 }
 
 pub trait Tickable {
-    fn tick(&self);
+    fn tick(&mut self);
 }
 
 pub struct House {

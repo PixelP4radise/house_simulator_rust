@@ -42,7 +42,7 @@ impl DescribableItem for Sprinkler {
 }
 
 impl Tickable for Sprinkler {
-    fn tick(&self) {
+    fn tick(&mut self) {
         if let Some(command) = &self.command {
             match command.as_str() {
                 "on" => match self.ticks_since_last_command {
@@ -86,6 +86,7 @@ impl Tickable for Sprinkler {
                 }
                 _ => {}
             }
+            self.ticks_since_last_command += 1;
         }
     }
 }

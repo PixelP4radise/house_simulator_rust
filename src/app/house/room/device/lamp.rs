@@ -42,7 +42,7 @@ impl DescribableItem for Lamp {
 }
 
 impl Tickable for Lamp {
-    fn tick(&self) {
+    fn tick(&mut self) {
         if let Some(command) = &self.command {
             match command.as_str() {
                 "on" => {
