@@ -43,7 +43,55 @@ impl DescribableItem for Sprinkler {
 
 impl Tickable for Sprinkler {
     fn tick(&self) {
-        todo!()
+        if let Some(command) = &self.command {
+            match command.as_str() {
+                "on" => match self.ticks_since_last_command {
+                    0 => {
+                        let properties_rc = self.properties.upgrade().unwrap();
+                        let mut properties = properties_rc.borrow_mut();
+
+                        let mut humidity = properties.get_mut("Humidity").unwrap();
+
+                        let current_value = humidity.get_value();
+                        let new_value = current_value + 50;
+                        if new_value > 75 {
+                            humidity.update_value(75);
+                        } else {
+                            humidity.update_value(new_value);
+                        }
+
+                        let mut vibration = properties.get_mut("Vibration").unwrap();
+
+                        let current_value = vibration.get_value();
+                        let new_value = current_value + 100;
+                        vibration.update_value(new_value);
+                    }
+                    1 => {
+                        self.properties
+                            .upgrade()
+                            .unwrap()
+                            .borrow_mut()
+                            .get_mut("Smoke")
+                            .unwrap()
+                            .update_value(0);
+                    }
+                    _ => {}
+                },
+                "off" => {
+                    if self.ticks_since_last_command == 5 {
+                        let properties_rc = self.properties.upgrade().unwrap();
+                        let mut properties = properties_rc.borrow_mut();
+
+                        let mut smoke = properties.get_mut("Smoke").unwrap();
+
+                        let current_value = smoke.get_value();
+                        let new_value = current_value - 100;
+                        smoke.update_value(new_value);
+                    }
+                }
+                _ => {}
+            }
+        }
     }
 }
 
@@ -56,7 +104,9 @@ impl Device for Sprinkler {
         &self.command
     }
 
+    //set command needs to alter the fact if the command is different it needs to reset the counter
     fn set_command(&mut self, command: String) {
-        self.command = Some(command);
+        //self.command = Some(command);
+        todo!()
     }
 }
