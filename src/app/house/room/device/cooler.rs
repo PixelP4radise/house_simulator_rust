@@ -8,7 +8,7 @@ use std::rc::Weak;
 pub struct Cooler {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
     id: usize,
-    command: String,
+    command: Option<String>,
     ticks_since_last_command: usize,
 }
 
@@ -20,7 +20,7 @@ impl Cooler {
             Self {
                 properties,
                 id,
-                command: String::new(),
+                command: None,
                 ticks_since_last_command: 0,
             }
         }
@@ -49,11 +49,11 @@ impl Tickable for Cooler {
 
 impl Device for Cooler {
     fn ticks_since_last_command(&self) -> usize {
-        todo!()
+        self.ticks_since_last_command
     }
 
-    fn command(&self) -> String {
-        todo!()
+    fn command(&self) -> &String {
+        &self.command
     }
     fn set_command(&mut self, command: String) {
         self.command = command;

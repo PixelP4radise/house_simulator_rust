@@ -8,7 +8,7 @@ use std::rc::Weak;
 pub struct Heater {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
     id: usize,
-    command: String,
+    command: Option<String>,
     ticks_since_last_command: usize,
 }
 impl Heater {
@@ -19,7 +19,7 @@ impl Heater {
             Self {
                 properties,
                 id,
-                command: String::new(),
+                command: None,
                 ticks_since_last_command: 0,
             }
         }
