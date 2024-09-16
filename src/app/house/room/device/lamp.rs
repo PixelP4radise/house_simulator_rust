@@ -43,7 +43,35 @@ impl DescribableItem for Lamp {
 
 impl Tickable for Lamp {
     fn tick(&self) {
-        todo!()
+        if let Some(command) = &self.command {
+            match command.as_str() {
+                "on" => {
+                    let properties_rc = self.properties.upgrade().unwrap();
+                    let mut properties = properties_rc.borrow_mut();
+
+                    let light = properties.get_mut("Light").unwrap();
+
+                    if self.ticks_since_last_command == 0 {
+                        let current_value = light.get_value();
+                        let new_value = current_value + 900;
+                        light.update_value(new_value);
+                    }
+                }
+                "off" => {
+                    let properties_rc = self.properties.upgrade().unwrap();
+                    let mut properties = properties_rc.borrow_mut();
+
+                    let light = properties.get_mut("Light").unwrap();
+
+                    if self.ticks_since_last_command == 0 {
+                        let current_value = light.get_value();
+                        let new_value = current_value - 900;
+                        light.update_value(new_value);
+                    }
+                }
+                _ => {}
+            }
+        }
     }
 }
 
@@ -56,6 +84,7 @@ impl Device for Lamp {
         &self.command
     }
     fn set_command(&mut self, command: String) {
-        self.command = Some(command);
+        //self.command = Some(command);
+        todo!()
     }
 }

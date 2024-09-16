@@ -3,6 +3,7 @@ use crate::app::house::room::property::Property;
 use crate::app::house::{DescribableItem, Tickable};
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::env::current_exe;
 use std::rc::Weak;
 
 pub struct Cooler {
@@ -43,7 +44,41 @@ impl DescribableItem for Cooler {
 
 impl Tickable for Cooler {
     fn tick(&self) {
-        todo!()
+        if let Some(command) = &self.command {
+            match command.as_str() {
+                "on" => {
+                    let properties_rc = self.properties.upgrade().unwrap();
+                    let mut properties = properties_rc.borrow_mut();
+
+                    let sound = properties.get_mut("Sound").unwrap();
+
+                    if self.ticks_since_last_command == 0 {
+                        let current_value = sound.get_value();
+                        let new_value = current_value + 20;
+                        sound.update_value(new_value);
+                    }
+
+                    let temperature = properties.get_mut("Temperature").unwrap();
+                    if self.ticks_since_last_command % 3 == 0 {
+                        let current_value = temperature.get_value();
+                        let new_value = current_value + 1;
+                        temperature.update_value(new_value);
+                    }
+                }
+                "off" => {
+                    let properties_rc = self.properties.upgrade().unwrap();
+                    let mut properties = properties_rc.borrow_mut();
+
+                    let sound = properties.get_mut("Sound").unwrap();
+                    if self.ticks_since_last_command == 0 {
+                        let current_value = sound.get_value();
+                        let new_value = current_value - 20;
+                        sound.update_value(new_value);
+                    }
+                }
+                _ => {}
+            }
+        }
     }
 }
 
@@ -56,6 +91,7 @@ impl Device for Cooler {
         &self.command
     }
     fn set_command(&mut self, command: String) {
-        self.command = Some(command);
+        //self.command = Some(command);
+        todo!()
     }
 }
