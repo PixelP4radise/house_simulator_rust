@@ -54,21 +54,21 @@ impl Processor {
 
         match rule_type {
             "equal_to" => {
-                if let Some(param_2) = param_2 {
+                if let Some(..) = param_2 {
                     Err("this rule only needs one parameter")
                 } else {
                     Ok(self.rules.push(Box::new(EqualTo::new(param_1, sensor))))
                 }
             }
             "greater_than" => {
-                if let Some(param_2) = param_2 {
+                if let Some(..) = param_2 {
                     Err("this rule only needs one parameter")
                 } else {
                     Ok(self.rules.push(Box::new(GreaterThan::new(param_1, sensor))))
                 }
             }
             "less_than" => {
-                if let Some(param_2) = param_2 {
+                if let Some(..) = param_2 {
                     Err("this rule only needs one parameter")
                 } else {
                     Ok(self.rules.push(Box::new(LessThan::new(param_1, sensor))))
@@ -169,7 +169,7 @@ impl DescribableItem for Processor {
 }
 
 impl Tickable for Processor {
-    fn tick(&self) {
+    fn tick(&mut self) {
         if self.rules.len() == 0 {
             return;
         }
@@ -190,9 +190,8 @@ impl Tickable for Processor {
 
 impl Clone for Processor {
     fn clone(&self) -> Self {
-        let mut rules: Vec<Box<dyn Rule>> =
-            self.rules.iter().map(|rule| rule.clone_box()).collect();
-        let mut devices = self.devices.iter().map(|device| device.clone()).collect();
+        let rules: Vec<Box<dyn Rule>> = self.rules.iter().map(|rule| rule.clone_box()).collect();
+        let devices = self.devices.iter().map(|device| device.clone()).collect();
 
         Processor {
             id: self.id,

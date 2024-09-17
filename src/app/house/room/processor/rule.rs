@@ -1,4 +1,3 @@
-use crate::app::house::room::sensor::Sensor;
 use crate::app::house::DescribableItem;
 
 pub trait Rule: DescribableItem + RuleClone {
