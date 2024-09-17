@@ -121,7 +121,7 @@ impl Room {
         value: i16,
     ) -> Result<(), &'static str> {
         match self.properties.borrow_mut().get_mut(property) {
-            Some(property) => Ok(property.update_value(value)),
+            Some(property) => Ok(property.set_value(value)),
             None => Err("the specified property doesn't exist"),
         }
     }

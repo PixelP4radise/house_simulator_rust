@@ -10,7 +10,7 @@ impl Property for Humidity {
         self.value
     }
 
-    fn update_value(&mut self, value: i16) {
+    fn set_value(&mut self, value: i16) {
         self.value = value;
     }
 }

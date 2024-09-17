@@ -4,7 +4,6 @@ use crate::app::house::{DescribableItem, Tickable};
 use std::cell::RefCell;
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use std::env::current_exe;
 use std::rc::Weak;
 
 pub struct Cooler {
@@ -56,14 +55,14 @@ impl Tickable for Cooler {
                     if self.ticks_since_last_command == 0 {
                         let current_value = sound.get_value();
                         let new_value = current_value + 20;
-                        sound.update_value(new_value);
+                        sound.set_value(new_value);
                     }
 
                     let temperature = properties.get_mut("Temperature").unwrap();
                     if self.ticks_since_last_command % 3 == 0 {
                         let current_value = temperature.get_value();
                         let new_value = current_value + 1;
-                        temperature.update_value(new_value);
+                        temperature.set_value(new_value);
                     }
                 }
                 "off" => {
@@ -74,7 +73,7 @@ impl Tickable for Cooler {
                     if self.ticks_since_last_command == 0 {
                         let current_value = sound.get_value();
                         let new_value = current_value - 20;
-                        sound.update_value(new_value);
+                        sound.set_value(new_value);
                     }
                 }
                 _ => {}

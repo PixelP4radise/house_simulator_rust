@@ -51,20 +51,20 @@ impl Tickable for Heater {
                     let mut properties = properties_rc.borrow_mut();
 
                     if self.ticks_since_last_command % 3 == 0 {
-                        let mut temperature = properties.get_mut("Temperature").unwrap();
+                        let temperature = properties.get_mut("Temperature").unwrap();
 
                         let current_value = temperature.get_value();
                         let new_value = current_value + 1;
 
-                        temperature.update_value(new_value.min(50));
+                        temperature.set_value(new_value.min(50));
                     }
                     if self.ticks_since_last_command == 0 {
-                        let mut sound = properties.get_mut("Sound").unwrap();
+                        let sound = properties.get_mut("Sound").unwrap();
 
                         let current_value = sound.get_value();
                         let new_value = current_value + 5;
 
-                        sound.update_value(new_value);
+                        sound.set_value(new_value);
                     }
                 }
                 "off" => {}

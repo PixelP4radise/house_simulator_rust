@@ -1,4 +1,4 @@
-use crate::app::house::room::device::{Device, Sprinkler, DEVICE_COUNTER};
+use crate::app::house::room::device::{Device, DEVICE_COUNTER};
 use crate::app::house::room::property::Property;
 use crate::app::house::{DescribableItem, Tickable};
 use std::cell::RefCell;
@@ -55,7 +55,7 @@ impl Tickable for Lamp {
                     if self.ticks_since_last_command == 0 {
                         let current_value = light.get_value();
                         let new_value = current_value + 900;
-                        light.update_value(new_value);
+                        light.set_value(new_value);
                     }
                 }
                 "off" => {
@@ -67,7 +67,7 @@ impl Tickable for Lamp {
                     if self.ticks_since_last_command == 0 {
                         let current_value = light.get_value();
                         let new_value = current_value - 900;
-                        light.update_value(new_value);
+                        light.set_value(new_value);
                     }
                 }
                 _ => {}

@@ -4,7 +4,7 @@ use crate::app::house::{DescribableItem, Tickable};
 use std::cell::RefCell;
 use std::cmp::Ordering;
 use std::collections::HashMap;
-use std::rc::{Rc, Weak};
+use std::rc::Weak;
 
 pub struct Sprinkler {
     properties: Weak<RefCell<HashMap<String, Box<dyn Property>>>>,
@@ -52,15 +52,15 @@ impl Tickable for Sprinkler {
 
                         let mut properties = properties_rc.borrow_mut();
 
-                        let mut humidity = properties.get_mut("Humidity").unwrap();
+                        let humidity = properties.get_mut("Humidity").unwrap();
                         let current_value = humidity.get_value();
                         let new_value = current_value + 50;
-                        humidity.update_value(new_value.min(75));
+                        humidity.set_value(new_value.min(75));
 
-                        let mut vibration = properties.get_mut("Vibration").unwrap();
+                        let vibration = properties.get_mut("Vibration").unwrap();
                         let current_value = vibration.get_value();
                         let new_value = current_value + 100;
-                        vibration.update_value(new_value);
+                        vibration.set_value(new_value);
                     }
                     1 => {
                         self.properties
@@ -69,7 +69,7 @@ impl Tickable for Sprinkler {
                             .borrow_mut()
                             .get_mut("Smoke")
                             .unwrap()
-                            .update_value(0);
+                            .set_value(0);
                     }
                     _ => {}
                 },
@@ -78,11 +78,11 @@ impl Tickable for Sprinkler {
                         let properties_rc = self.properties.upgrade().unwrap();
                         let mut properties = properties_rc.borrow_mut();
 
-                        let mut vibration = properties.get_mut("Vibration").unwrap();
+                        let vibration = properties.get_mut("Vibration").unwrap();
 
                         let current_value = vibration.get_value();
                         let new_value = current_value - 100;
-                        vibration.update_value(new_value);
+                        vibration.set_value(new_value);
                     }
                 }
                 _ => {}
