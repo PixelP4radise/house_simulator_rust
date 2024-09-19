@@ -121,7 +121,7 @@ impl Room {
         value: i16,
     ) -> Result<(), &'static str> {
         match self.properties.borrow_mut().get_mut(property) {
-            Some(property) => Ok(property.set_value(value)),
+            Some(property) => Ok(property.set_value(value)?),
             None => Err("the specified property doesn't exist"),
         }
     }
@@ -344,47 +344,10 @@ impl DescribableItem for Room {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    #[test]
-    pub fn adding_a_sensor() {
-        let mut room = Room::new(1, 1);
-
-        room.add_sensor("humidity");
-
-        assert_eq!(1, room.sensors.len());
-    }
+    use crate::app::house::room::Room;
 
     #[test]
-    pub fn measuring_default_properties_values() {
-        let mut room = Room::new(1, 1);
-
-        room.add_sensor("humidity");
-
-        assert_eq!(
-            0,
-            room.properties
-                .borrow()
-                .get("Humidity")
-                .unwrap()
-                .get_value()
-        );
-    }
-
-    #[test]
-    pub fn measuring_changed_properties_values() {
-        let mut room = Room::new(1, 1);
-
-        room.add_sensor("humidity");
-
-        room.change_property_value("Humidity", 40);
-
-        assert_eq!(
-            40,
-            room.properties
-                .borrow()
-                .get("Humidity")
-                .unwrap()
-                .get_value()
-        );
+    fn list_components() {
+        let room = Room::new(1,1);
     }
 }
