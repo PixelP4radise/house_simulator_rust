@@ -12,6 +12,3 @@ impl App {
         todo!()
     }
 }
-
-#[cfg(test)]
-mod tests {}

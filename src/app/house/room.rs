@@ -348,6 +348,18 @@ mod tests {
 
     #[test]
     fn list_components() {
-        let room = Room::new(1,1);
+        let mut room = Room::new(1, 1);
+
+        room.add_device("cooler").unwrap();
+
+        room.add_processor(String::from("ola"));
+
+        room.add_sensor("humidity").unwrap();
+
+        assert_eq!(
+            room.list_components(),
+            "p0 Processor 0\ns0 Humidity Sensor 0\nd0 Cooler \n"
+        )
     }
+
 }
