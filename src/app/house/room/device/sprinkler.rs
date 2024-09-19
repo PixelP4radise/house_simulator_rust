@@ -26,6 +26,50 @@ impl Sprinkler {
             }
         }
     }
+
+    fn remove_smoke(&self) {
+        self.properties
+            .upgrade()
+            .unwrap()
+            .borrow_mut()
+            .get_mut("Smoke")
+            .unwrap()
+            .set_value(0)
+            .unwrap();
+    }
+
+    fn increase_vibration(&self) {
+        let properties_rc = self.properties.upgrade().unwrap();
+        let mut properties = properties_rc.borrow_mut();
+
+        let vibration = properties.get_mut("Vibration").unwrap();
+        let current_value = vibration.get_value();
+        let new_value = current_value + 100;
+
+        vibration.set_value(new_value).unwrap();
+    }
+
+    fn decrease_vibration(&self) {
+        let properties_rc = self.properties.upgrade().unwrap();
+        let mut properties = properties_rc.borrow_mut();
+
+        let vibration = properties.get_mut("Vibration").unwrap();
+
+        let current_value = vibration.get_value();
+        let new_value = current_value - 100;
+        vibration.set_value(new_value).unwrap();
+    }
+
+    fn increase_humidity(&self) {
+        let properties_rc = self.properties.upgrade().unwrap();
+
+        let mut properties = properties_rc.borrow_mut();
+
+        let humidity = properties.get_mut("Humidity").unwrap();
+        let current_value = humidity.get_value();
+        let new_value = current_value + 50;
+        humidity.set_value(new_value.min(75)).unwrap();
+    }
 }
 
 impl DescribableItem for Sprinkler {
@@ -48,41 +92,17 @@ impl Tickable for Sprinkler {
             match command.as_str() {
                 "on" => match self.ticks_since_last_command {
                     0 => {
-                        let properties_rc = self.properties.upgrade().unwrap();
-
-                        let mut properties = properties_rc.borrow_mut();
-
-                        let humidity = properties.get_mut("Humidity").unwrap();
-                        let current_value = humidity.get_value();
-                        let new_value = current_value + 50;
-                        humidity.set_value(new_value.min(75));
-
-                        let vibration = properties.get_mut("Vibration").unwrap();
-                        let current_value = vibration.get_value();
-                        let new_value = current_value + 100;
-                        vibration.set_value(new_value);
+                        self.increase_humidity();
+                        self.increase_vibration();
                     }
                     1 => {
-                        self.properties
-                            .upgrade()
-                            .unwrap()
-                            .borrow_mut()
-                            .get_mut("Smoke")
-                            .unwrap()
-                            .set_value(0);
+                        self.remove_smoke();
                     }
                     _ => {}
                 },
                 "off" => {
                     if self.ticks_since_last_command == 5 {
-                        let properties_rc = self.properties.upgrade().unwrap();
-                        let mut properties = properties_rc.borrow_mut();
-
-                        let vibration = properties.get_mut("Vibration").unwrap();
-
-                        let current_value = vibration.get_value();
-                        let new_value = current_value - 100;
-                        vibration.set_value(new_value);
+                        self.decrease_vibration();
                     }
                 }
                 _ => {}

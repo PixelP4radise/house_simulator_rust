@@ -25,6 +25,42 @@ impl Heater {
             }
         }
     }
+
+    fn activate_noise(&self) {
+        let properties_rc = self.properties.upgrade().unwrap();
+        let mut properties = properties_rc.borrow_mut();
+
+        let sound = properties.get_mut("Sound").unwrap();
+
+        let current_value = sound.get_value();
+        let new_value = current_value + 5;
+
+        sound.set_value(new_value).unwrap();
+    }
+
+    fn deactivate_noise(&self) {
+        let properties_rc = self.properties.upgrade().unwrap();
+        let mut properties = properties_rc.borrow_mut();
+
+        let sound = properties.get_mut("Sound").unwrap();
+
+        let current_value = sound.get_value();
+        let new_value = current_value - 5;
+
+        sound.set_value(new_value).unwrap();
+    }
+
+    fn raise_temperature(&self) {
+        let properties_rc = self.properties.upgrade().unwrap();
+        let mut properties = properties_rc.borrow_mut();
+
+        let temperature = properties.get_mut("Temperature").unwrap();
+
+        let current_value = temperature.get_value();
+        let new_value = current_value + 1;
+
+        temperature.set_value(new_value.min(50)).unwrap();
+    }
 }
 
 impl DescribableItem for Heater {
@@ -46,28 +82,18 @@ impl Tickable for Heater {
         if let Some(command) = &self.command {
             match command.as_str() {
                 "on" => {
-                    let properties_rc = self.properties.upgrade().unwrap();
-
-                    let mut properties = properties_rc.borrow_mut();
-
-                    if self.ticks_since_last_command % 3 == 0 {
-                        let temperature = properties.get_mut("Temperature").unwrap();
-
-                        let current_value = temperature.get_value();
-                        let new_value = current_value + 1;
-
-                        temperature.set_value(new_value.min(50));
-                    }
                     if self.ticks_since_last_command == 0 {
-                        let sound = properties.get_mut("Sound").unwrap();
-
-                        let current_value = sound.get_value();
-                        let new_value = current_value + 5;
-
-                        sound.set_value(new_value);
+                        self.activate_noise();
+                    }
+                    if self.ticks_since_last_command + 1 % 3 == 0 {
+                        self.raise_temperature();
                     }
                 }
-                "off" => {}
+                "off" => {
+                    if self.ticks_since_last_command == 0 {
+                        self.deactivate_noise();
+                    }
+                }
                 _ => {}
             }
             self.ticks_since_last_command += 1;
