@@ -361,5 +361,4 @@ mod tests {
             "p0 Processor 0\ns0 Humidity Sensor 0\nd0 Cooler \n"
         )
     }
-
 }
