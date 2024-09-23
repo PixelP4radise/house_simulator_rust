@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut terminal = Terminal::new(backend)?;
     let mut app = App::new();
 
-    run_app(&mut terminal, &mut app)?; //passar para dentro da app provavelmente
+    app.run(&mut terminal)?;
 
     disable_raw_mode()?;
     execute!(
@@ -33,26 +33,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     terminal.show_cursor()?;
 
     Ok(())
-}
-
-fn run_app<B: Backend>(terminal: &mut Terminal<B>, app: &mut App) -> Result<(), Box<dyn Error>> {
-    loop {
-        terminal.draw(|frame| ui(frame, app))?;
-
-        if let Event::Key(key_event) = event::read()? {
-            if key_event.kind == event::KeyEventKind::Release {
-                // Skip events that are not KeyEventKind::Press
-                continue;
-            }
-            match app.get_current_screen() {
-                CurrentScreen::START => match key_event.code {
-                    KeyCode::Char('q') | KeyCode::Char('Q') => return Ok(()),
-                    KeyCode::Enter => {}
-                    _ => {}
-                },
-                CurrentScreen::RUNNING => {}
-                CurrentScreen::EXIT => {}
-            }
-        }
-    }
 }
