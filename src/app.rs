@@ -8,7 +8,7 @@ mod house;
 
 use self::house::House;
 use crate::app::house::ParameterNumber;
-use crate::app::CurrentScreen::RUNNING;
+use crate::app::CurrentScreen::{EXIT, RUNNING, START};
 use crate::ui::ui;
 use ratatui::crossterm::event;
 use ratatui::crossterm::event::{Event, KeyCode};
@@ -22,102 +22,63 @@ pub struct App {
     current_screen: CurrentScreen,
     command: String,
     currently_editing: bool,
-    command_functions:
-        HashMap<String, Box<dyn FnMut(&mut App, Vec<String>) -> Result<Option<String>, String>>>,
+    log: String,
 }
 
 impl App {
     pub fn new() -> Self {
         let mut app = Self {
             house: None,
-            current_screen: CurrentScreen::START,
+            current_screen: START,
             command: String::new(),
             currently_editing: false,
-            command_functions: HashMap::new(),
+            log: String::new(),
         };
-
-        app.command_functions.reserve(24);
-
-        app.command_functions
-            .insert(String::from("hnew"), Box::new(Self::hnew));
-        app.command_functions
-            .insert(String::from("hrem"), Box::new(Self::hrem));
-        app.command_functions
-            .insert(String::from("znew"), Box::new(Self::znew));
-        app.command_functions
-            .insert(String::from("zrem"), Box::new(Self::zrem));
-        app.command_functions
-            .insert(String::from("zlist"), Box::new(Self::zlist));
-        app.command_functions
-            .insert(String::from("zcomp"), Box::new(Self::zcomp));
-        app.command_functions
-            .insert(String::from("zprops"), Box::new(Self::zprops));
-        app.command_functions
-            .insert(String::from("pmod"), Box::new(Self::pmod));
-        app.command_functions
-            .insert(String::from("cnew"), Box::new(Self::cnew));
-        app.command_functions
-            .insert(String::from("crem"), Box::new(Self::crem));
-        app.command_functions
-            .insert(String::from("rnew"), Box::new(Self::rnew));
-        app.command_functions
-            .insert(String::from("pchange"), Box::new(Self::pchange));
-        app.command_functions
-            .insert(String::from("rlist"), Box::new(Self::rrem));
-        app.command_functions
-            .insert(String::from("asoc"), Box::new(Self::asoc));
-        app.command_functions
-            .insert(String::from("disa"), Box::new(Self::dcom));
-        app.command_functions
-            .insert(String::from("dcom"), Box::new(Self::dcom));
-        app.command_functions
-            .insert(String::from("psave"), Box::new(Self::psave));
-        app.command_functions
-            .insert(String::from("prestore"), Box::new(Self::prestore));
-        app.command_functions
-            .insert(String::from("prem"), Box::new(Self::prem));
-        app.command_functions
-            .insert(String::from("plist"), Box::new(Self::plist));
-        app.command_functions
-            .insert(String::from("exec"), Box::new(Self::exec));
 
         app
     }
 
-    pub fn get_current_screen(&self) -> &CurrentScreen {
+    pub fn current_screen(&self) -> &CurrentScreen {
         &self.current_screen
     }
 
-    pub fn run<B: Backend>(&mut self, terminal: &mut Terminal<B>) -> Result<(), Box<dyn Error>> {
-        loop {
-            terminal.draw(|frame| ui(frame, self))?; //passar para dentro da app tambem
-
-            if let Event::Key(key_event) = event::read()? {
-                if key_event.kind == event::KeyEventKind::Release {
-                    // Skip events that are not KeyEventKind::Press
-                    continue;
-                }
-                match self.current_screen {
-                    CurrentScreen::START => match key_event.code {
-                        KeyCode::Char('q') | KeyCode::Char('Q') => return Ok(()),
-                        KeyCode::Enter => self.current_screen = RUNNING,
-                        _ => {}
-                    },
-                    CurrentScreen::RUNNING => match key_event.code {
-                        KeyCode::Char('q') | KeyCode::Char('Q') => return Ok(()),
-                        KeyCode::Enter => match self.currently_editing {
-                            true => {}
-                            false => {}
-                        },
-                        _ => {}
-                    },
-                    CurrentScreen::EXIT => {}
-                }
-            }
-        }
+    pub fn set_current_screen(&mut self, current_screen: CurrentScreen) {
+        self.current_screen = current_screen;
     }
 
-    fn hnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn currently_editing(&self) -> bool {
+        self.currently_editing
+    }
+
+    pub fn set_currently_editing(&mut self, value: bool) {
+        self.currently_editing = value;
+    }
+
+    pub fn set_command(&mut self, command: String) {
+        self.command = command;
+    }
+
+    pub fn command(&self) -> &String {
+        &self.command
+    }
+
+    pub fn letter_into_command(&mut self, value: char) {
+        self.command.push(value);
+    }
+
+    pub fn pop_letter_from_command(&mut self) {
+        self.command.pop();
+    }
+
+    pub fn log(&self) -> &String {
+        &self.log
+    }
+
+    pub fn set_log(&mut self, log: String) {
+        self.log = log;
+    }
+
+    pub fn hnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 2 {
             return Err(String::from("Only Two arguments required"));
         }
@@ -140,14 +101,14 @@ impl App {
             Err(e) => Err(format!("Failed to build House: {e}")),
         }
     }
-    fn hrem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn hrem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 0 {
             return Err(String::from("hrem doesn't take any arguments"));
         }
         self.house = None;
         Ok(None)
     }
-    fn znew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn znew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 2 {
             return Err(String::from("znew requires two arguments"));
         }
@@ -171,7 +132,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn zrem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn zrem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 1 {
             return Err(String::from("zrem only allows one argument"));
         }
@@ -186,7 +147,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn zlist(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn zlist(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 0 {
             return Err(String::from("zlist doesn't take any arguments"));
         }
@@ -197,7 +158,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn zcomp(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn zcomp(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 1 {
             return Err(String::from("zcomp requires one parameter"));
         }
@@ -215,7 +176,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn zprops(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn zprops(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 1 {
             return Err(String::from("zprops requires one parameter"));
         }
@@ -233,7 +194,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn pmod(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn pmod(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("pmod requires three parameters"));
         }
@@ -256,7 +217,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn cnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn cnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("cnew requires three parameters"));
         }
@@ -274,7 +235,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn crem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn crem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("crem requires 3 arguments"));
         }
@@ -294,7 +255,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn rnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn rnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() < 5 {
             return Err(String::from("rnew takes at least 5 arguments"));
         }
@@ -331,7 +292,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn pchange(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn pchange(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("pchange requires three arguments"));
         }
@@ -351,7 +312,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn rlist(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn rlist(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 2 {
             return Err(String::from("rlist requires two parameters"));
         }
@@ -370,7 +331,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn rrem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn rrem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("rrem requires three parameters"));
         }
@@ -388,7 +349,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn asoc(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn asoc(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("asoc requires three parameters"));
         }
@@ -406,7 +367,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn disa(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn disa(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("disa requires three parameters"));
         }
@@ -425,7 +386,7 @@ impl App {
         }
     }
 
-    fn dcom(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn dcom(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("dcom requires three parameters"));
         }
@@ -443,7 +404,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn psave(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn psave(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 3 {
             return Err(String::from("psave requires three parameters"));
         }
@@ -464,7 +425,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn prestore(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn prestore(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 1 {
             return Err(String::from("prestore requires one parameter"));
         }
@@ -482,7 +443,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn prem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn prem(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 1 {
             return Err(String::from("prem requires one parameter"));
         }
@@ -501,7 +462,7 @@ impl App {
         }
     }
 
-    fn plist(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn plist(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 0 {
             return Err(String::from("plist takes no parameters"));
         }
@@ -512,7 +473,7 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    fn exec(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+    pub fn exec(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         // if arguments.len() != 1 {
         //     return Err(String::from("exec requires one parameter"));
         // }
