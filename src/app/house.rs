@@ -1,6 +1,7 @@
 mod room;
 
-use crate::app::house::room::{ParameterNumber, Processor, Room};
+pub use self::room::ParameterNumber;
+use crate::app::house::room::{Processor, Room};
 use std::collections::HashMap;
 
 pub trait DescribableItem {
