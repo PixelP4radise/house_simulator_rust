@@ -33,7 +33,7 @@ pub struct Room {
 //it's missing location on the house
 
 impl Room {
-    pub fn new(row: u8, column: u8) -> Self {
+    pub fn new(x_coordinate: u8, y_coordinate: u8) -> Self {
         let mut properties: HashMap<String, Box<dyn Property>> = HashMap::new();
 
         properties.insert(
@@ -56,8 +56,8 @@ impl Room {
                 sensors: vec![],
                 devices: vec![],
                 id,
-                y_coordinate: row,
-                x_coordinate: column,
+                x_coordinate,
+                y_coordinate,
             }
         }
     }

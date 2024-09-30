@@ -18,8 +18,8 @@ pub trait Tickable {
 
 pub struct House {
     rooms: Vec<Room>,
-    height: u8,
-    width: u8,
+    x_space: u8,
+    y_space: u8,
     processor_memory: HashMap<String, Processor>,
     ticks: usize,
 }
@@ -38,15 +38,15 @@ impl House {
 
         Ok(House {
             rooms,
-            height,
-            width,
+            x_space: height,
+            y_space: width,
             processor_memory: HashMap::new(),
             ticks: 0,
         })
     }
 
     pub fn height(&self) -> u8 {
-        self.height
+        self.x_space
     }
 
     pub fn ticks(&self) -> usize {
@@ -54,24 +54,24 @@ impl House {
     }
 
     pub fn width(&self) -> u8 {
-        self.width
+        self.y_space
     }
 
-    pub fn add_room(&mut self, row: u8, column: u8) -> Result<(), &'static str> {
-        if row > self.height {
+    pub fn add_room(&mut self, x_coordinate: u8, y_coordinate: u8) -> Result<(), &'static str> {
+        if x_coordinate > self.x_space {
             return Err("row is higher than allowed");
         }
-        if column > self.width {
+        if y_coordinate > self.y_space {
             return Err("column is higher than allowed");
         }
 
         for room in &self.rooms {
-            if room.y_coordinate() == row && room.x_coordinate() == column {
+            if room.x_coordinate() == x_coordinate && room.y_coordinate() == y_coordinate {
                 return Err("a room is already occupying that position");
             }
         }
-
-        self.rooms.push(Room::new(row, column));
+        
+        self.rooms.push(Room::new(x_coordinate, y_coordinate));
         Ok(())
     }
 

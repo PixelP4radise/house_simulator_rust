@@ -148,18 +148,18 @@ impl App {
             return Err(String::from("znew requires two arguments"));
         }
 
-        let row: u8 = match arguments[0].parse() {
+        let x_coordinate: u8 = match arguments[0].parse() {
             Ok(row) => row,
             Err(_) => return Err(String::from("Row must be a number")),
         };
 
-        let collumn: u8 = match arguments[1].parse() {
+        let y_coordinate: u8 = match arguments[1].parse() {
             Ok(collumn) => collumn,
             Err(_) => return Err(String::from("Collumn must be a number")),
         };
 
         if let Some(house) = &mut self.house {
-            match house.add_room(row, collumn) {
+            match house.add_room(x_coordinate, y_coordinate) {
                 Ok(_) => Ok(None),
                 Err(e) => Err(format!("Failed to add room: {e}")),
             }

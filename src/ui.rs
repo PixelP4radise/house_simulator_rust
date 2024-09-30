@@ -167,313 +167,64 @@ fn render_running_screen(frame: &mut Frame, app: &App) {
             let right_middle = right_side[1];
             let right_bottom = right_side[2];
 
-            let description = app
+            let left_top_description = app
                 .get_description(RoomCoordinate(1, 1))
                 .unwrap_or_else(|| String::from("Room 1"));
             frame.render_widget(
-                Paragraph::new(description)
+                Paragraph::new(left_top_description)
                     .block(Block::new().borders(Borders::ALL))
                     .wrap(Wrap { trim: true }),
                 left_top,
             );
-            let description = app
+            let right_top_description = app
                 .get_description(RoomCoordinate(2, 1))
                 .unwrap_or_else(|| String::from("Room 2"));
             frame.render_widget(
-                Paragraph::new(description)
+                Paragraph::new(right_top_description)
                     .block(Block::new().borders(Borders::ALL))
                     .wrap(Wrap { trim: true }),
                 right_top,
             );
-            let description = app
+            let left_middle_description = app
                 .get_description(RoomCoordinate(1, 2))
                 .unwrap_or_else(|| String::from("Room 3"));
             frame.render_widget(
-                Paragraph::new(description)
+                Paragraph::new(left_middle_description)
                     .block(Block::new().borders(Borders::ALL))
                     .wrap(Wrap { trim: true }),
                 left_middle,
             );
-            let description = app
+            let right_middle_description = app
                 .get_description(RoomCoordinate(2, 2))
                 .unwrap_or_else(|| String::from("Room 4"));
             frame.render_widget(
-                Paragraph::new(description)
+                Paragraph::new(right_middle_description)
                     .block(Block::new().borders(Borders::ALL))
                     .wrap(Wrap { trim: true }),
                 right_middle,
             );
-            let description = app
+            let left_bottom_description = app
                 .get_description(RoomCoordinate(1, 3))
                 .unwrap_or_else(|| String::from("Room 5"));
             frame.render_widget(
-                Paragraph::new(description)
+                Paragraph::new(left_bottom_description)
                     .block(Block::new().borders(Borders::ALL))
                     .wrap(Wrap { trim: true }),
                 left_bottom,
             );
-            let description = app
+            let right_bottom_description = app
                 .get_description(RoomCoordinate(2, 3))
                 .unwrap_or_else(|| String::from("Room 6"));
             frame.render_widget(
-                Paragraph::new(description)
+                Paragraph::new(right_bottom_description)
                     .block(Block::new().borders(Borders::ALL))
                     .wrap(Wrap { trim: true }),
                 right_bottom,
             );
         }
-        "24" => {
-            let room_layout = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(vec![Constraint::Fill(1), Constraint::Fill(1)])
-                .split(rooms);
-
-            let top_side = Layout::default()
-                .direction(Direction::Horizontal)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[0]);
-            let bottom_side = Layout::default()
-                .direction(Direction::Horizontal)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[1]);
-
-            let description = app
-                .get_description(RoomCoordinate(1, 1))
-                .unwrap_or_else(|| String::from("Room 1"));
-
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                top_side[0],
-            );
-            let description = app
-                .get_description(RoomCoordinate(1, 2))
-                .unwrap_or_else(|| String::from("Room 2"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                top_side[1],
-            );
-            let description = app
-                .get_description(RoomCoordinate(1, 3))
-                .unwrap_or_else(|| String::from("Room 3"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                top_side[2],
-            );
-            let description = app
-                .get_description(RoomCoordinate(1, 4))
-                .unwrap_or_else(|| String::from("Room 4"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                top_side[3],
-            );
-            let description = app
-                .get_description(RoomCoordinate(2, 1))
-                .unwrap_or_else(|| String::from("Room 5"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                bottom_side[0],
-            );
-            let description = app
-                .get_description(RoomCoordinate(2, 2))
-                .unwrap_or_else(|| String::from("Room 6"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                bottom_side[1],
-            );
-            let description = app
-                .get_description(RoomCoordinate(2, 3))
-                .unwrap_or_else(|| String::from("Room 7"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                bottom_side[2],
-            );
-            let description = app
-                .get_description(RoomCoordinate(2, 4))
-                .unwrap_or_else(|| String::from("Room 8"));
-            frame.render_widget(
-                Paragraph::new(description)
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                bottom_side[3],
-            );
-        }
-        "32" => {
-            let room_layout = Layout::default()
-                .direction(Direction::Horizontal)
-                .constraints(vec![Constraint::Fill(1), Constraint::Fill(1)])
-                .split(rooms);
-
-            let right_side = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[0]);
-
-            let left_side = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[1]);
-
-            frame.render_widget(
-                Paragraph::new("Room 1")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                right_side[0],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 2")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                left_side[0],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 3")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                right_side[1],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 4")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                left_side[1],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 5")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                right_side[2],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 6")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                left_side[2],
-            );
-        }
-        "33" => {
-            let room_layout = Layout::default()
-                .direction(Direction::Horizontal)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(rooms);
-
-            let right_side = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[0]);
-
-            let middle = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[1]);
-
-            let left_side = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(vec![
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                    Constraint::Fill(1),
-                ])
-                .split(room_layout[2]);
-
-            frame.render_widget(
-                Paragraph::new("Room 1")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                right_side[0],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 2")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                middle[0],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 3")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                left_side[0],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 4")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                right_side[1],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 5")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                middle[1],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 6")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                left_side[1],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 7")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                right_side[2],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 8")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                middle[2],
-            );
-            frame.render_widget(
-                Paragraph::new("Room 9")
-                    .block(Block::new().borders(Borders::ALL))
-                    .wrap(Wrap { trim: true }),
-                left_side[2],
-            );
-        }
+        "24" => {}
+        "32" => {}
+        "33" => {}
         "34" => {}
         "42" => {}
         "43" => {}
