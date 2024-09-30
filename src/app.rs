@@ -149,13 +149,13 @@ impl App {
         }
 
         let x_coordinate: u8 = match arguments[0].parse() {
-            Ok(row) => row,
-            Err(_) => return Err(String::from("Row must be a number")),
+            Ok(x_coordinate) => x_coordinate,
+            Err(_) => return Err(String::from("X coordinate must be a positive number")),
         };
 
         let y_coordinate: u8 = match arguments[1].parse() {
-            Ok(collumn) => collumn,
-            Err(_) => return Err(String::from("Collumn must be a number")),
+            Ok(y_coordinate) => y_coordinate,
+            Err(_) => return Err(String::from("Y coordinate must be a positive number")),
         };
 
         if let Some(house) = &mut self.house {

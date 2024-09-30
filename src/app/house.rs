@@ -59,10 +59,10 @@ impl House {
 
     pub fn add_room(&mut self, x_coordinate: u8, y_coordinate: u8) -> Result<(), &'static str> {
         if x_coordinate > self.x_space {
-            return Err("row is higher than allowed");
+            return Err("X coordinate is higher than allowed");
         }
         if y_coordinate > self.y_space {
-            return Err("column is higher than allowed");
+            return Err("Y coordinate is higher than allowed");
         }
 
         for room in &self.rooms {
@@ -70,7 +70,7 @@ impl House {
                 return Err("a room is already occupying that position");
             }
         }
-        
+
         self.rooms.push(Room::new(x_coordinate, y_coordinate));
         Ok(())
     }
