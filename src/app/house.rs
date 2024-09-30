@@ -10,6 +10,8 @@ pub trait DescribableItem {
     fn name(&self) -> String; //name like Room or Processor or Heater
 }
 
+pub struct RoomCoordinate(pub u8, pub u8);
+
 pub trait Tickable {
     fn tick(&mut self);
 }
@@ -19,6 +21,7 @@ pub struct House {
     height: u8,
     width: u8,
     processor_memory: HashMap<String, Processor>,
+    ticks: usize,
 }
 
 impl House {
@@ -38,7 +41,20 @@ impl House {
             height,
             width,
             processor_memory: HashMap::new(),
+            ticks: 0,
         })
+    }
+
+    pub fn height(&self) -> u8 {
+        self.height
+    }
+
+    pub fn ticks(&self) -> usize {
+        self.ticks
+    }
+
+    pub fn width(&self) -> u8 {
+        self.width
     }
 
     pub fn add_room(&mut self, row: u8, column: u8) -> Result<(), &'static str> {
@@ -153,14 +169,14 @@ impl House {
         self.rooms[index].add_rule(processor_id, rule_type, sensor_id, parameters)
     }
 
-    pub fn change_command(
+    pub fn change_command_from_processor(
         &mut self,
         room_id: &str,
         processor_id: &str,
         command: String,
     ) -> Result<(), &'static str> {
         let index = self.find_room(room_id)?;
-        self.rooms[index].change_command(processor_id, command)
+        self.rooms[index].change_command_from_processor(processor_id, command)
     }
 
     pub fn list_rules(&self, room_id: &str, processor_id: &str) -> Result<String, &'static str> {
@@ -241,5 +257,36 @@ impl House {
         } else {
             Err("the name specified couldn't be found in memory")
         }
+    }
+
+    pub fn get_description(&self, room_coordinate: RoomCoordinate) -> Option<String> {
+        let index =
+            match self.rooms.iter().position(|room| {
+                room.column() == room_coordinate.0 && room.row() == room_coordinate.1
+            }) {
+                Some(index) => index,
+                None => return None,
+            };
+
+        Some(self.rooms[index].get_description())
+    }
+
+    pub fn change_command_from_device(
+        &mut self,
+        room_id: &str,
+        device_id: &str,
+        command: String,
+    ) -> Result<(), &'static str> {
+        let index = self.find_room(room_id)?;
+        self.rooms[index].change_command_from_device(device_id, command)
+    }
+}
+
+impl Tickable for House {
+    fn tick(&mut self) {
+        for room in &mut self.rooms {
+            room.tick()
+        }
+        self.ticks += 1;
     }
 }

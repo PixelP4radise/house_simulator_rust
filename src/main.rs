@@ -45,13 +45,15 @@ fn main() -> Result<(), Box<dyn Error>> {
     command_functions.insert(String::from("pchange"), Box::new(App::pchange));
     command_functions.insert(String::from("rlist"), Box::new(App::rrem));
     command_functions.insert(String::from("asoc"), Box::new(App::asoc));
-    command_functions.insert(String::from("disa"), Box::new(App::dcom));
+    command_functions.insert(String::from("disa"), Box::new(App::disa));
     command_functions.insert(String::from("dcom"), Box::new(App::dcom));
     command_functions.insert(String::from("psave"), Box::new(App::psave));
     command_functions.insert(String::from("prestore"), Box::new(App::prestore));
     command_functions.insert(String::from("prem"), Box::new(App::prem));
     command_functions.insert(String::from("plist"), Box::new(App::plist));
     command_functions.insert(String::from("exec"), Box::new(App::exec));
+    command_functions.insert(String::from("next"), Box::new(App::next));
+    command_functions.insert(String::from("advance"), Box::new(App::advance));
 
     run(&mut terminal, &mut app, &mut command_functions)?;
 

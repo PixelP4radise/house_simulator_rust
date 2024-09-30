@@ -7,7 +7,7 @@ pub enum CurrentScreen {
 mod house;
 
 use self::house::House;
-use crate::app::house::ParameterNumber;
+use crate::app::house::{ParameterNumber, Tickable};
 use crate::app::CurrentScreen::{EXIT, RUNNING, START};
 use crate::ui::ui;
 use ratatui::crossterm::event;
@@ -16,6 +16,13 @@ use ratatui::prelude::Backend;
 use ratatui::Terminal;
 use std::collections::HashMap;
 use std::error::Error;
+
+pub use self::house::RoomCoordinate;
+
+pub enum TicksReturnType {
+    Some(usize),
+    None(String),
+}
 
 pub struct App {
     house: Option<House>,
@@ -36,6 +43,34 @@ impl App {
         };
 
         app
+    }
+
+    pub fn layout(&self) -> String {
+        if let Some(house) = &self.house {
+            format!("{}{}", house.height(), house.width())
+        } else {
+            String::from("0")
+        }
+    }
+
+    pub fn house(&self) -> &Option<House> {
+        &self.house
+    }
+
+    pub fn ticks(&self) -> usize {
+        if let Some(house) = &self.house {
+            house.ticks()
+        } else {
+            0
+        }
+    }
+
+    pub fn get_description(&self, room_coordinate: RoomCoordinate) -> Option<String> {
+        if let Some(house) = &self.house {
+            house.get_description(room_coordinate)
+        } else {
+            None
+        }
     }
 
     pub fn current_screen(&self) -> &CurrentScreen {
@@ -80,7 +115,7 @@ impl App {
 
     pub fn hnew(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 2 {
-            return Err(String::from("Only Two arguments required"));
+            return Err(String::from("hnew requires two arguments"));
         }
 
         let height: u8 = match arguments[0].parse() {
@@ -302,7 +337,7 @@ impl App {
         let command = arguments[2].clone();
 
         if let Some(house) = &mut self.house {
-            match house.change_command(room_id, processor_id, command) {
+            match house.change_command_from_processor(room_id, processor_id, command) {
                 Ok(_) => Ok(None),
                 Err(e) => Err(format!(
                     "Couldn't change command from processor {processor_id} in room {room_id}: {e}"
@@ -392,13 +427,16 @@ impl App {
         }
 
         let room_id = arguments[0].as_str();
-        let processor_id = arguments[1].as_str();
+        let device_id = arguments[1].as_str();
         let command = arguments[2].clone();
 
         if let Some(house) = &mut self.house {
-            match house.change_command(room_id, processor_id, command) {
+            match house.change_command_from_device(room_id, device_id, command) {
                 Ok(_) => Ok(None),
-                Err(e) => Err(format!("Couldn't change command from processor {processor_id} in room {room_id} to {}: {e}", arguments[2])),
+                Err(e) => Err(format!(
+                    "Couldn't change command from device {device_id} in room {room_id} to {}: {e}",
+                    arguments[2]
+                )),
             }
         } else {
             Err(String::from("House needs to be built first"))
@@ -483,6 +521,44 @@ impl App {
         //     Err(String::from("House needs to be built first"))
         // }
         todo!()
+    }
+
+    pub fn next(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+        if arguments.len() != 0 {
+            return Err(String::from(
+                "nex doesn't require any additional parameters",
+            ));
+        }
+
+        if let Some(house) = &mut self.house {
+            house.tick();
+            Ok(None)
+        } else {
+            Err(String::from("House needs to be built first"))
+        }
+    }
+
+    pub fn advance(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
+        if arguments.len() != 1 {
+            return Err(String::from("advance requires one parameter"));
+        }
+
+        let number: usize = match arguments[0].parse() {
+            Ok(number) => match number > 0 {
+                true => number,
+                false => return Err(String::from("Argument must be a number higher than 0")),
+            },
+            Err(_) => return Err(String::from("Argument must be a number higher than 0")),
+        };
+
+        if let Some(house) = &mut self.house {
+            for _ in 0..number {
+                house.tick();
+            }
+            Ok(None)
+        } else {
+            Err(String::from("House needs to be built first"))
+        }
     }
 }
 

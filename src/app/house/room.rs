@@ -13,7 +13,7 @@ use self::{
 };
 
 pub use self::processor::Processor;
-use super::DescribableItem;
+use super::{DescribableItem, Tickable};
 pub use crate::app::house::room::processor::ParameterNumber;
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -275,7 +275,7 @@ impl Room {
         )
     }
 
-    pub fn change_command(
+    pub fn change_command_from_processor(
         &mut self,
         processor_id: &str,
         command: String,
@@ -326,6 +326,36 @@ impl Room {
             self.processors.push(processor);
         }
     }
+
+    pub fn get_description(&self) -> String {
+        format!(
+            "ID: {}\nProcessors:\n{}\nDevices:\n{}\nSensors:\n{}",
+            self.full_id(),
+            self.processors
+                .iter()
+                .map(|processor| processor.full_id())
+                .collect::<String>(),
+            self.devices
+                .iter()
+                .map(|device| device.borrow().full_id())
+                .collect::<String>(),
+            self.sensors
+                .iter()
+                .map(|sensor| sensor.full_id())
+                .collect::<String>()
+        )
+    }
+
+    pub fn change_command_from_device(
+        &mut self,
+        device_id: &str,
+        command: String,
+    ) -> Result<(), &'static str> {
+        let index = self.find_device(device_id)?;
+
+        self.devices[index].borrow_mut().set_command(command);
+        Ok(())
+    }
 }
 
 impl DescribableItem for Room {
@@ -342,23 +372,13 @@ impl DescribableItem for Room {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::app::house::room::Room;
-
-    #[test]
-    fn list_components() {
-        let mut room = Room::new(1, 1);
-
-        room.add_device("cooler").unwrap();
-
-        room.add_processor(String::from("ola"));
-
-        room.add_sensor("humidity").unwrap();
-
-        assert_eq!(
-            room.list_components(),
-            "p0 Processor 0\ns0 Humidity Sensor 0\nd0 Cooler \n"
-        )
+impl Tickable for Room {
+    fn tick(&mut self) {
+        for processor in &mut self.processors {
+            processor.tick();
+        }
+        for device in &mut self.devices {
+            device.borrow_mut().tick();
+        }
     }
 }

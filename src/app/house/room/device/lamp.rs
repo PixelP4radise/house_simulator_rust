@@ -104,6 +104,8 @@ impl Device for Lamp {
                     self.ticks_since_last_command = 0;
                 }
             }
+        } else {
+            self.command = Some(command);
         }
     }
 }

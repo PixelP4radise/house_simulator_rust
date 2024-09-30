@@ -1,3 +1,4 @@
+use crate::app::house::room::Room;
 use crate::app::house::DescribableItem;
 
 pub trait Sensor: DescribableItem {

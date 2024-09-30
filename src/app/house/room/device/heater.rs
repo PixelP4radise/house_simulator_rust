@@ -85,7 +85,7 @@ impl Tickable for Heater {
                     if self.ticks_since_last_command == 0 {
                         self.activate_noise();
                     }
-                    if self.ticks_since_last_command + 1 % 3 == 0 {
+                    if (self.ticks_since_last_command + 1) % 3 == 0 {
                         self.raise_temperature();
                     }
                 }
@@ -118,6 +118,8 @@ impl Device for Heater {
                     self.ticks_since_last_command = 0;
                 }
             }
+        } else {
+            self.command = Some(command);
         }
     }
 }
