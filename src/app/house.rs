@@ -66,7 +66,7 @@ impl House {
         }
 
         for room in &self.rooms {
-            if room.row() == row && room.column() == column {
+            if room.y_coordinate() == row && room.x_coordinate() == column {
                 return Err("a room is already occupying that position");
             }
         }
@@ -260,13 +260,15 @@ impl House {
     }
 
     pub fn get_description(&self, room_coordinate: RoomCoordinate) -> Option<String> {
-        let index =
-            match self.rooms.iter().position(|room| {
-                room.column() == room_coordinate.0 && room.row() == room_coordinate.1
-            }) {
-                Some(index) => index,
-                None => return None,
-            };
+        if self.rooms.is_empty() {
+            return None;
+        }
+        let index = match self.rooms.iter().position(|room| {
+            room.x_coordinate() == room_coordinate.0 && room.y_coordinate() == room_coordinate.1
+        }) {
+            Some(index) => index,
+            None => return None,
+        };
 
         Some(self.rooms[index].get_description())
     }

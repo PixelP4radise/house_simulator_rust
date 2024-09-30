@@ -27,8 +27,8 @@ pub struct Room {
     sensors: Vec<Rc<dyn Sensor>>,
     devices: Vec<Rc<RefCell<dyn Device>>>,
     id: usize,
-    row: u8,
-    column: u8,
+    y_coordinate: u8,
+    x_coordinate: u8,
 }
 //it's missing location on the house
 
@@ -56,18 +56,18 @@ impl Room {
                 sensors: vec![],
                 devices: vec![],
                 id,
-                row,
-                column,
+                y_coordinate: row,
+                x_coordinate: column,
             }
         }
     }
 
-    pub fn row(&self) -> u8 {
-        self.row
+    pub fn y_coordinate(&self) -> u8 {
+        self.y_coordinate
     }
 
-    pub fn column(&self) -> u8 {
-        self.column
+    pub fn x_coordinate(&self) -> u8 {
+        self.x_coordinate
     }
 
     pub fn sensors_number(&self) -> usize {
