@@ -29,7 +29,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         Box<dyn FnMut(&mut App, Vec<String>) -> Result<Option<String>, String>>,
     > = HashMap::new();
 
-    command_functions.reserve(24);
+    command_functions.reserve(22);
 
     command_functions.insert(String::from("hnew"), Box::new(App::hnew));
     command_functions.insert(String::from("hrem"), Box::new(App::hrem));
@@ -51,7 +51,6 @@ fn main() -> Result<(), Box<dyn Error>> {
     command_functions.insert(String::from("prestore"), Box::new(App::prestore));
     command_functions.insert(String::from("prem"), Box::new(App::prem));
     command_functions.insert(String::from("plist"), Box::new(App::plist));
-    command_functions.insert(String::from("exec"), Box::new(App::exec));
     command_functions.insert(String::from("next"), Box::new(App::next));
     command_functions.insert(String::from("advance"), Box::new(App::advance));
 

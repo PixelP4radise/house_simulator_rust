@@ -511,17 +511,6 @@ impl App {
             Err(String::from("House needs to be built first"))
         }
     }
-    pub fn exec(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
-        // if arguments.len() != 1 {
-        //     return Err(String::from("exec requires one parameter"));
-        // }
-        //
-        // if let Some(house) = &mut self.house {
-        // } else {
-        //     Err(String::from("House needs to be built first"))
-        // }
-        todo!()
-    }
 
     pub fn next(&mut self, arguments: Vec<String>) -> Result<Option<String>, String> {
         if arguments.len() != 0 {
