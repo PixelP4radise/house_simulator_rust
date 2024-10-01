@@ -43,7 +43,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     command_functions.insert(String::from("crem"), Box::new(App::crem));
     command_functions.insert(String::from("rnew"), Box::new(App::rnew));
     command_functions.insert(String::from("pchange"), Box::new(App::pchange));
-    command_functions.insert(String::from("rlist"), Box::new(App::rrem));
+    command_functions.insert(String::from("rlist"), Box::new(App::rlist));
     command_functions.insert(String::from("asoc"), Box::new(App::asoc));
     command_functions.insert(String::from("disa"), Box::new(App::disa));
     command_functions.insert(String::from("dcom"), Box::new(App::dcom));

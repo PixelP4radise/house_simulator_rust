@@ -108,8 +108,8 @@ impl Processor {
                     "{} {} {} {}\n",
                     rule.name(),
                     rule.full_id(),
-                    rule.name(),
-                    rule.full_id()
+                    rule.get_sensor_name(),
+                    rule.get_sensor_full_id()
                 )
             })
             .collect::<String>()
