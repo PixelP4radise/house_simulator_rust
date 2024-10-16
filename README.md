@@ -135,3 +135,34 @@ While on the Exit Screen:
 
 - `rnew <zone_id> <rules_processor_id> <rule> <sensor_id> [param1] [param2] [...]`
   - Create a new rule on the processor with the specified id. The rule is associated to the value received from the sensor identified by the sensor_id
+- `pchange <zone_id> <rules_processor_id> <new_command>`
+  - Changes the command to be sent in the indicated processor, at the specified room, command is one word.
+- `rlist <zone_id> <rules_processor_ID>`
+  - List the rules of the rules processor, one per line, indicating their name, their ID and the name and ID of the associated sensor
+- `rrem <zone_id> <rules_processor_id>`
+  - Removes indicated rule from the specified rule processor
+- `asoc <zone_id> <rules_processor_id> <device_id>`
+  - Estabilishes the association between the output of the indicated processor and the specified device
+- `disa <zone_id> <rules_processor_id> <device_id>`
+  - Removes the association between the output of the indicated processor and the specified device
+
+### Commands to interact with devices
+
+- `dcom <zone_id> <device_id> <command>`
+  - Sends the indicated command to the device whose ID was specified
+
+### Commands for copying/retrieving rule processors
+
+- `psave <zone_id> <rule_processor_id> <name>`
+  - Saves the rule processor and everything associated to it to memory. The name must be unique
+- `prestore <name>`
+  - Restores the rule processor saved in memory to it's previous room, if it still exists. If there's a processor with the same id still in the room, the memory one will overwrite it's information.
+- `prem <name>`
+  - Removes the processor from memory
+- `plist`
+  - Lists the processors in memory. This list includes the name, processor Id and the Id from where it came from
+
+### Additional general Commands
+
+- `exit`
+  - Cleanly exits the program
