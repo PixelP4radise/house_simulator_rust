@@ -5,3 +5,10 @@ edition = "2021"
 
 [dependencies]
 ratatui = "0.28.1"
+
+[profile.release]
+lto = true
+
+[profile.release-thin-lto]
+inherits = "release"
+lto = "thin"
