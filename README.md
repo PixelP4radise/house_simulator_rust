@@ -201,3 +201,13 @@ While on the Exit Screen:
 | sprinkler |     h     | **on** - turns on the devices <br> **off** - turns off the device, it continues affecting room as if it was on for 5 more moments | <ul><li>In the first instant</li><ul><li>Adds 50% humidity up to 75%</li><li>Adds 100hz vibration</li></ul><li>In the second instant</li><ul><li>Smoke is set to 0</li></ul></ul><ul> | removes 100hz of vibration |
 |  cooler   |     r     |                                 **on** - turns on the device <br> **off** - turns off the device                                  |                       <ul><li>Every 3 instants:</li><ul><li>Removes 1 degree</li></ul><li>In the first instant:</li><ul><li>Adds 20 db of noise</li></ul></ul>                        |   removes 20 db of noise   |
 |   lamp    |     l     |                                 **on** - turns on the devices <br> **off** - turns of the device                                  |                                                       <ul><li>In the first instant:</li><ul><li>Adds 900 lumens</li></ul></ul>                                                        |     removes 900 lumens     |
+
+## Rule
+
+|     Rule     | Operation: "evaluates to true if" | Parameters |
+| :----------: | :-------------------------------: | :--------: |
+|   equal_to   |         is equal to **x**         |     x      |
+|  less_than   |        is less than **x**         |     x      |
+| greater_than |       is greater than **x**       |     x      |
+|  in_between  |    is between **x** and **y**     |    x, y    |
+|   outside    |  is not between **x** and **y**   |    x, y    |
