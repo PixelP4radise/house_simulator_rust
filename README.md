@@ -180,3 +180,15 @@ While on the Exit Screen:
 |  Humidity   |       %        |    0    |   100   |
 |    Smoke    | Obscuration(%) |    0    |   100   |
 |    Sound    |    Decibels    |    0    |    -    |
+
+## Sensors
+
+|   Sensor    | Character(for viewing) | Observed property |
+| :---------: | :--------------------: | :---------------: |
+| temperature |           t            |    Temperature    |
+|  movement   |           v            |     Vibration     |
+| luminosity  |           m            |       Light       |
+|  radiation  |           d            |     Radiation     |
+|  humidity   |           h            |     Humidity      |
+|    sound    |           o            |       Sound       |
+|    smoke    |           s            |       Smoke       |
