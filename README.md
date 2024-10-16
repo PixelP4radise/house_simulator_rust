@@ -17,6 +17,17 @@ The simulator includes home areas, which have properties such as temperature, li
 
 The simulator includes passage of time, which is completely independent of real-time measured by the computer.
 
+## Index
+
+- [Pre-Requisites](#️-pre-requisites)
+- [Build the Project](#-build-the-project)
+- [Usage](#️-usage)
+- [Commands](#commands)
+- [Properties](#properties)
+- [Sensors](#sensors)
+- [Devices](#devices)
+- [Rules](#rules)
+
 ## 🛠️ Pre-Requisites
 
 Before you attempt to clone this project make sure you have the following pre-requisites:
@@ -202,7 +213,7 @@ While on the Exit Screen:
 |  cooler   |     r     |                                 **on** - turns on the device <br> **off** - turns off the device                                  |                       <ul><li>Every 3 instants:</li><ul><li>Removes 1 degree</li></ul><li>In the first instant:</li><ul><li>Adds 20 db of noise</li></ul></ul>                        |   removes 20 db of noise   |
 |   lamp    |     l     |                                 **on** - turns on the devices <br> **off** - turns of the device                                  |                                                       <ul><li>In the first instant:</li><ul><li>Adds 900 lumens</li></ul></ul>                                                        |     removes 900 lumens     |
 
-## Rule
+## Rules
 
 |     Rule     | Operation: "evaluates to true if" | Parameters |
 | :----------: | :-------------------------------: | :--------: |
