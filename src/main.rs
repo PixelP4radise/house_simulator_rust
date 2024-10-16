@@ -8,6 +8,7 @@ use ratatui::crossterm::terminal::{
     disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen,
 };
 use ratatui::Terminal;
+use std::cmp::Ordering;
 use std::collections::HashMap;
 use std::error::Error;
 use std::io;
@@ -104,6 +105,11 @@ fn run<B: Backend>(
                             };
                             let arguments: Vec<String> =
                                 command_and_arguments.map(|arg| arg.to_string()).collect();
+
+                            match command.cmp("exit") {
+                                Ordering::Equal => return Ok(()),
+                                _ => {}
+                            }
 
                             match command_functions.get_mut(command) {
                                 Some(function) => match function(app, arguments) {
