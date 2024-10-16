@@ -126,8 +126,10 @@ While on the Exit Screen:
   - Lists the properties recognized by the simulator with the Indicated id. Each property is described by its name and its current value
 - `pmod <zone_id> <name> <value>`
   - Modifies the value of the property whose name is given in the zone with the given ID to the specified value.
+  - the property name is specified with first letter in uppercase
 - `cnew <zone_id> <s | p | d> <type | command>`
   - Adds a sensors/processor/device of the indicated type to the zone that has the indicated id. "type" refers to the type of sensor or device. In the case of processor since there's only one type of processor, the last argument specifies the command that must be sent to the associated devices when it's rules associate to true.
+  - types of sensors or devices are specified in lower case
 - `crem <zone_id> <s | p | d> <id>`
   - Removes the component with the given id from the specified zone. It can't be removed as long as it's being referenced by another component
 
@@ -166,3 +168,15 @@ While on the Exit Screen:
 
 - `exit`
   - Cleanly exits the program
+
+## Properties
+
+| Properties  |      Unit      | Minimum | Maximum |
+| :---------: | :------------: | :-----: | :-----: |
+| Temperature |    Celsius     |  -273   |    -    |
+|    Light    |     Lumens     |    0    |    -    |
+|  Radiation  |   Becquerel    |    0    |    -    |
+|  Vibration  |     Hertz      |    0    |    -    |
+|  Humidity   |       %        |    0    |   100   |
+|    Smoke    | Obscuration(%) |    0    |   100   |
+|    Sound    |    Decibels    |    0    |    -    |
